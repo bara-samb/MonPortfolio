@@ -1,0 +1,237 @@
+"use client";
+
+import React, { useState } from 'react';
+import { Mail, MapPin, Send, CheckCircle2, MessageSquare } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/Icons';
+import { PERSONAL_INFO } from '@/lib/constants';
+
+export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API request
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+    }, 1500);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  return (
+    <section id="contact" className="py-24 px-6 relative bg-grid-pattern">
+      {/* Background glow flare */}
+      <div className="absolute top-1/2 right-1/4 w-[300px] h-[300px] rounded-full radial-glow-indigo z-0 opacity-10 pointer-events-none"></div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+            Me <span className="text-sky-400">Contacter</span>
+          </h2>
+          <div className="w-12 h-1 bg-gradient-to-r from-sky-400 to-indigo-500 mx-auto mb-6"></div>
+          <p className="text-slate-400">
+            Une question, une opportunité de stage, d'alternance ou de collaboration ? N'hésitez pas à m'écrire.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          
+          {/* Left Panel: Contact Info */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            <h3 className="text-xl font-bold text-white font-display">
+              Informations de contact
+            </h3>
+            
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Vous pouvez me contacter directement par e-mail ou me retrouver sur mes différents réseaux professionnels.
+            </p>
+
+            <div className="space-y-4 pt-4">
+              {/* Email Card */}
+              <div className="flex items-center gap-4 p-4 rounded-xl glass-panel border border-white/5">
+                <div className="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Email</p>
+                  <a href={`mailto:${PERSONAL_INFO.email}`} className="text-slate-200 hover:text-sky-400 text-sm font-medium transition-colors">
+                    {PERSONAL_INFO.email}
+                  </a>
+                </div>
+              </div>
+
+              {/* Location Card */}
+              <div className="flex items-center gap-4 p-4 rounded-xl glass-panel border border-white/5">
+                <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Localisation</p>
+                  <p className="text-slate-200 text-sm font-medium">{PERSONAL_INFO.location}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Grid */}
+            <div className="flex gap-4 pt-4">
+              <a 
+                href={PERSONAL_INFO.github} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm"
+              >
+                <GithubIcon className="w-4 h-4" />
+                GitHub
+              </a>
+              <a 
+                href={PERSONAL_INFO.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm"
+              >
+                <LinkedinIcon className="w-4 h-4" />
+                LinkedIn
+              </a>
+            </div>
+
+          </div>
+
+          {/* Right Panel: Interactive Form */}
+          <div className="lg:col-span-7 p-8 rounded-2xl glass-panel border border-white/5 relative">
+            
+            {isSubmitted ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center space-y-4 animate-fade-in">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h4 className="text-xl font-bold text-white">Message envoyé avec succès !</h4>
+                <p className="text-slate-400 text-sm max-w-sm">
+                  Merci pour votre message. Je vous répondrai dans les plus brefs délais à l'adresse e-mail indiquée.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                
+                <div className="flex items-center gap-2 text-slate-300 pb-2 border-b border-white/5 mb-4">
+                  <MessageSquare className="w-5 h-5 text-sky-400" />
+                  <span className="font-bold font-display">Envoyer un message</span>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      Nom complet
+                    </label>
+                    <input 
+                      type="text" 
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm"
+                      placeholder="Jean Dupont"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      Adresse E-mail
+                    </label>
+                    <input 
+                      type="email" 
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm"
+                      placeholder="jean.dupont@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    Sujet
+                  </label>
+                  <input 
+                    type="text" 
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm"
+                    placeholder="Objet de votre message"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    Message
+                  </label>
+                  <textarea 
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm resize-none"
+                    placeholder="Écrivez votre message ici..."
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+                      <span>Envoi en cours...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Envoyer le message</span>
+                    </>
+                  )}
+                </button>
+
+              </form>
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
