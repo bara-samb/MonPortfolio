@@ -2,6 +2,25 @@ import { PROJECTS as DEFAULT_PROJECTS, SKILLS as DEFAULT_SKILLS, TIMELINE as DEF
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
+// Log the active API URL for debugging in production
+if (typeof window !== 'undefined') {
+  console.log('Portfolio API Client initialized calling:', API_URL);
+}
+
+// SSR-safe localStorage helpers
+function getStored(key: string): string | null {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem(key);
+  }
+  return null;
+}
+
+function setStored(key: string, value: string): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(key, value);
+  }
+}
+
 async function fetchJSON(path: string, options: RequestInit = {}) {
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
@@ -23,7 +42,7 @@ export async function getProjects(): Promise<any[]> {
     return await fetchJSON('/api/projects');
   } catch (err) {
     console.warn('API error fetching projects, loading from localStorage/constants:', err);
-    const stored = localStorage.getItem('portfolio_projects');
+    const stored = getStored('portfolio_projects');
     return stored ? JSON.parse(stored) : DEFAULT_PROJECTS;
   }
 }
@@ -37,18 +56,17 @@ export async function addProject(project: any, passcode: string): Promise<any> {
     });
   } catch (err) {
     console.warn('API error adding project, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_projects');
+    const stored = getStored('portfolio_projects');
     const list = stored ? JSON.parse(stored) : [...DEFAULT_PROJECTS];
     const newProj = { id: Date.now().toString(), ...project };
     list.unshift(newProj);
-    localStorage.setItem('portfolio_projects', JSON.stringify(list));
+    setStored('portfolio_projects', JSON.stringify(list));
     return newProj;
   }
 }
 
 export async function updateProject(oldTitle: string, project: any, passcode: string): Promise<any> {
   try {
-    // To update, we first fetch all projects from API to find the item ID matching oldTitle
     const list = await fetchJSON('/api/projects');
     const item = list.find((p: any) => p.title === oldTitle);
     if (!item) throw new Error('Project not found on server.');
@@ -59,10 +77,10 @@ export async function updateProject(oldTitle: string, project: any, passcode: st
     });
   } catch (err) {
     console.warn('API error updating project, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_projects');
+    const stored = getStored('portfolio_projects');
     let list = stored ? JSON.parse(stored) : [...DEFAULT_PROJECTS];
     list = list.map((p: any) => p.title === oldTitle ? { ...p, ...project } : p);
-    localStorage.setItem('portfolio_projects', JSON.stringify(list));
+    setStored('portfolio_projects', JSON.stringify(list));
     return project;
   }
 }
@@ -78,10 +96,10 @@ export async function deleteProject(title: string, passcode: string): Promise<vo
     });
   } catch (err) {
     console.warn('API error deleting project, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_projects');
+    const stored = getStored('portfolio_projects');
     let list = stored ? JSON.parse(stored) : [...DEFAULT_PROJECTS];
     list = list.filter((p: any) => p.title !== title);
-    localStorage.setItem('portfolio_projects', JSON.stringify(list));
+    setStored('portfolio_projects', JSON.stringify(list));
   }
 }
 
@@ -91,7 +109,7 @@ export async function getSkills(): Promise<any[]> {
     return await fetchJSON('/api/skills');
   } catch (err) {
     console.warn('API error fetching skills, loading from localStorage/constants:', err);
-    const stored = localStorage.getItem('portfolio_skills');
+    const stored = getStored('portfolio_skills');
     return stored ? JSON.parse(stored) : DEFAULT_SKILLS;
   }
 }
@@ -105,11 +123,11 @@ export async function addSkill(skill: any, passcode: string): Promise<any> {
     });
   } catch (err) {
     console.warn('API error adding skill, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_skills');
+    const stored = getStored('portfolio_skills');
     const list = stored ? JSON.parse(stored) : [...DEFAULT_SKILLS];
     const newSkill = { id: Date.now().toString(), ...skill };
     list.unshift(newSkill);
-    localStorage.setItem('portfolio_skills', JSON.stringify(list));
+    setStored('portfolio_skills', JSON.stringify(list));
     return newSkill;
   }
 }
@@ -126,10 +144,10 @@ export async function updateSkill(oldName: string, skill: any, passcode: string)
     });
   } catch (err) {
     console.warn('API error updating skill, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_skills');
+    const stored = getStored('portfolio_skills');
     let list = stored ? JSON.parse(stored) : [...DEFAULT_SKILLS];
     list = list.map((s: any) => s.name === oldName ? { ...s, ...skill } : s);
-    localStorage.setItem('portfolio_skills', JSON.stringify(list));
+    setStored('portfolio_skills', JSON.stringify(list));
     return skill;
   }
 }
@@ -145,10 +163,10 @@ export async function deleteSkill(name: string, passcode: string): Promise<void>
     });
   } catch (err) {
     console.warn('API error deleting skill, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_skills');
+    const stored = getStored('portfolio_skills');
     let list = stored ? JSON.parse(stored) : [...DEFAULT_SKILLS];
     list = list.filter((s: any) => s.name !== name);
-    localStorage.setItem('portfolio_skills', JSON.stringify(list));
+    setStored('portfolio_skills', JSON.stringify(list));
   }
 }
 
@@ -158,7 +176,7 @@ export async function getTimeline(): Promise<any[]> {
     return await fetchJSON('/api/timeline');
   } catch (err) {
     console.warn('API error fetching timeline, loading from localStorage/constants:', err);
-    const stored = localStorage.getItem('portfolio_timeline');
+    const stored = getStored('portfolio_timeline');
     return stored ? JSON.parse(stored) : DEFAULT_TIMELINE;
   }
 }
@@ -172,11 +190,11 @@ export async function addTimelineItem(item: any, passcode: string): Promise<any>
     });
   } catch (err) {
     console.warn('API error adding timeline item, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_timeline');
+    const stored = getStored('portfolio_timeline');
     const list = stored ? JSON.parse(stored) : [...DEFAULT_TIMELINE];
     const newItem = { id: Date.now().toString(), ...item };
     list.unshift(newItem);
-    localStorage.setItem('portfolio_timeline', JSON.stringify(list));
+    setStored('portfolio_timeline', JSON.stringify(list));
     return newItem;
   }
 }
@@ -192,10 +210,10 @@ export async function deleteTimelineItem(title: string, institution: string, pas
     });
   } catch (err) {
     console.warn('API error deleting timeline item, using localStorage fallback:', err);
-    const stored = localStorage.getItem('portfolio_timeline');
+    const stored = getStored('portfolio_timeline');
     let list = stored ? JSON.parse(stored) : [...DEFAULT_TIMELINE];
     list = list.filter((t: any) => !(t.title === title && t.institution === institution));
-    localStorage.setItem('portfolio_timeline', JSON.stringify(list));
+    setStored('portfolio_timeline', JSON.stringify(list));
   }
 }
 
