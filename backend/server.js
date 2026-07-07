@@ -176,52 +176,47 @@ function writeJSON(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
-// MongoDB Schemas (if MONGODB_URI is provided)
-let ProjectModel, SkillModel, TimelineModel, dbConnected = false;
+// MongoDB Schemas & Models
+const ProjectSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  tech: [String],
+  role: String,
+  github: String,
+  featured: Boolean
+});
+const ProjectModel = mongoose.models.Project || mongoose.model('Project', ProjectSchema);
+
+const SkillSchema = new mongoose.Schema({
+  name: String,
+  category: String,
+  level: Number
+});
+const SkillModel = mongoose.models.Skill || mongoose.model('Skill', SkillSchema);
+
+const TimelineSchema = new mongoose.Schema({
+  year: String,
+  title: String,
+  institution: String,
+  description: String,
+  type: String
+});
+const TimelineModel = mongoose.models.Timeline || mongoose.model('Timeline', TimelineSchema);
+
+let dbConnected = false;
 
 if (MONGODB_URI) {
   mongoose.connect(MONGODB_URI)
     .then(() => {
       console.log('Successfully connected to MongoDB.');
       dbConnected = true;
-      initializeMongoModels();
+      seedMongo();
     })
     .catch(err => {
       console.error('MongoDB connection error, falling back to Local JSON Files:', err);
     });
 } else {
   console.log('No MONGODB_URI provided. Running on Local JSON Files storage.');
-}
-
-function initializeMongoModels() {
-  const ProjectSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    tech: [String],
-    role: String,
-    github: String,
-    featured: Boolean
-  });
-  ProjectModel = mongoose.models.Project || mongoose.model('Project', ProjectSchema);
-
-  const SkillSchema = new mongoose.Schema({
-    name: String,
-    category: String,
-    level: Number
-  });
-  SkillModel = mongoose.models.Skill || mongoose.model('Skill', SkillSchema);
-
-  const TimelineSchema = new mongoose.Schema({
-    year: String,
-    title: String,
-    institution: String,
-    description: String,
-    type: String
-  });
-  TimelineModel = mongoose.models.Timeline || mongoose.model('Timeline', TimelineSchema);
-
-  // Auto seed MongoDB
-  seedMongo();
 }
 
 async function seedMongo() {
