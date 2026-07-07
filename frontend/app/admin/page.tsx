@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Lock, ShieldAlert, ShieldCheck, Cpu, Database, Network, BookOpen, ArrowLeft, Plus, Trash2, Edit, X, Calendar, Award, GraduationCap, Briefcase
+  Lock, ShieldAlert, ShieldCheck, Cpu, Database, Network, BookOpen, ArrowLeft, Plus, Trash2, Edit, X, Calendar, Award, GraduationCap, Briefcase, Camera
 } from 'lucide-react';
 import {
   getProjects, addProject, updateProject, deleteProject,
   getSkills, addSkill, updateSkill, deleteSkill,
   getTimeline, addTimelineItem, deleteTimelineItem,
-  verifyPasscode
+  verifyPasscode, getSetting, saveSetting
 } from '@/lib/api';
 
 interface Project {
@@ -43,6 +43,37 @@ export default function AdminDashboard() {
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [activePasscode, setActivePasscode] = useState('');
 
+  // Profile settings states
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [photoMessage, setPhotoMessage] = useState('');
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 1.5 * 1024 * 1024) {
+      alert("La photo est trop volumineuse. Veuillez choisir une image de moins de 1.5 Mo.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = reader.result as string;
+      setProfileImage(base64);
+      setPhotoMessage("Envoi en cours...");
+      try {
+        await saveSetting('profile_image', base64, activePasscode);
+        setPhotoMessage("Photo de profil mise à jour avec succès !");
+        localStorage.setItem('portfolio_image_updated', Date.now().toString());
+        setTimeout(() => setPhotoMessage(''), 3000);
+      } catch (err) {
+        console.error(err);
+        setPhotoMessage("Erreur lors de la mise à jour.");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Real-time server stats
   const [cpu, setCpu] = useState(28);
   const [ram, setRam] = useState(54);
@@ -71,14 +102,16 @@ export default function AdminDashboard() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [projData, skillData, timeData] = await Promise.all([
+        const [projData, skillData, timeData, imgData] = await Promise.all([
           getProjects(),
           getSkills(),
-          getTimeline()
+          getTimeline(),
+          getSetting('profile_image')
         ]);
         setProjects(projData);
         setSkills(skillData);
         setTimeline(timeData);
+        if (imgData) setProfileImage(imgData);
       } catch (err) {
         console.error('Error loading portfolio data:', err);
       }
@@ -350,26 +383,58 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Server Performance monitor */}
-        <div className="grid grid-cols-2 gap-4 max-w-md">
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-              <Cpu className="w-5 h-5" />
+        {/* Stats and Profile Settings Panel */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl">
+          {/* Server Performance monitor */}
+          <div className="grid grid-cols-2 gap-4 h-full">
+            <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Statut CPU</p>
+                <h3 className="text-lg font-bold font-mono text-white mt-0.5">{cpu}%</h3>
+              </div>
             </div>
-            <div>
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Statut CPU</p>
-              <h3 className="text-lg font-bold font-mono text-white mt-0.5">{cpu}%</h3>
+
+            <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                <Database className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Statut RAM</p>
+                <h3 className="text-lg font-bold font-mono text-white mt-0.5">{ram}%</h3>
+              </div>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
-              <Database className="w-5 h-5" />
+          {/* Profile settings card */}
+          <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-4">
+            <h3 className="text-xs font-bold text-white flex items-center gap-2 font-display uppercase tracking-wider text-slate-400">
+              <Camera className="w-4 h-4 text-emerald-400" />
+              Configuration du Profil
+            </h3>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-lg overflow-hidden border border-white/10 shrink-0 bg-slate-950">
+                <img 
+                  src={profileImage || "/monProfile.jpeg"} 
+                  alt="Aperçu" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">Mettre à jour la photo</label>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handlePhotoUpload}
+                  className="block w-full text-xs text-slate-400 file:mr-2.5 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[10px] file:font-bold file:uppercase file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 file:cursor-pointer file:transition-colors"
+                />
+              </div>
             </div>
-            <div>
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Statut RAM</p>
-              <h3 className="text-lg font-bold font-mono text-white mt-0.5">{ram}%</h3>
-            </div>
+            {photoMessage && (
+              <p className="text-[10px] text-emerald-400 font-semibold transition-all animate-pulse">{photoMessage}</p>
+            )}
           </div>
         </div>
 

@@ -230,3 +230,27 @@ export async function verifyPasscode(passcode: string): Promise<boolean> {
     return passcode === '1373' || passcode === 'admin';
   }
 }
+
+// --- SETTINGS ---
+export async function getSetting(key: string): Promise<string | null> {
+  try {
+    const res = await fetchJSON(`/api/settings/${key}`);
+    return res.value;
+  } catch (err) {
+    console.warn(`API error fetching setting ${key}:`, err);
+    return getStored(`setting_${key}`);
+  }
+}
+
+export async function saveSetting(key: string, value: string, passcode: string): Promise<void> {
+  try {
+    await fetchJSON('/api/settings', {
+      method: 'POST',
+      headers: { 'Authorization': passcode },
+      body: JSON.stringify({ key, value })
+    });
+  } catch (err) {
+    console.warn(`API error saving setting ${key}, saving locally:`, err);
+    setStored(`setting_${key}`, value);
+  }
+}

@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { ArrowDown, Mail, Network, Terminal, Shield, Download } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
+import { getSetting } from '@/lib/api';
 
 export default function Hero() {
   const [visibleLines, setVisibleLines] = useState(0);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,6 +21,20 @@ export default function Hero() {
       });
     }, 120); // Fast typing sequence
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const loadProfileImage = async () => {
+      try {
+        const img = await getSetting('profile_image');
+        if (img) setProfileImage(img);
+      } catch (err) {
+        console.error('Failed to load profile image', err);
+      }
+    };
+    loadProfileImage();
+    window.addEventListener('storage', loadProfileImage);
+    return () => window.removeEventListener('storage', loadProfileImage);
   }, []);
 
   return (
@@ -153,7 +169,7 @@ export default function Hero() {
               <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_12px_#10b981] opacity-70 animate-scan z-20"></div>
 
               <img
-                src="/monProfile.jpeg"
+                src={profileImage || "/monProfile.jpeg"}
                 alt="Mame Bara Samb"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />

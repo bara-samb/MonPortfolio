@@ -21,6 +21,7 @@ const DATA_DIR = path.join(__dirname, 'data');
 const PROJECTS_FILE = path.join(DATA_DIR, 'projects.json');
 const SKILLS_FILE = path.join(DATA_DIR, 'skills.json');
 const TIMELINE_FILE = path.join(DATA_DIR, 'timeline.json');
+const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -197,6 +198,12 @@ const TimelineSchema = new mongoose.Schema({
 });
 const TimelineModel = mongoose.models.Timeline || mongoose.model('Timeline', TimelineSchema);
 
+const SettingsSchema = new mongoose.Schema({
+  key: { type: String, unique: true },
+  value: String
+});
+const SettingsModel = mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);
+
 if (DATABASE_URL) {
   if (DATABASE_URL.startsWith('postgres://') || DATABASE_URL.startsWith('postgresql://')) {
     dbType = 'postgres';
@@ -265,6 +272,12 @@ async function initPostgres() {
         institution TEXT,
         description TEXT,
         type TEXT
+      )
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT
       )
     `);
     
@@ -719,6 +732,66 @@ app.delete('/api/timeline/:id', authorize, async (req, res) => {
     if (list.length === initialLen) return res.status(404).json({ error: 'Élément du parcours non trouvé.' });
     writeJSON(TIMELINE_FILE, list);
     return res.json({ message: 'Élément du parcours supprimé avec succès.' });
+  }
+});
+
+// --- SETTINGS ROUTES ---
+
+app.get('/api/settings/:key', async (req, res) => {
+  const { key } = req.params;
+  if (dbType === 'postgres') {
+    try {
+      const resDb = await pgPool.query('SELECT value FROM settings WHERE key = $1', [key]);
+      if (resDb.rowCount === 0) return res.json({ key, value: null });
+      return res.json({ key, value: resDb.rows[0].value });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const item = await SettingsModel.findOne({ key });
+      return res.json({ key, value: item ? item.value : null });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else {
+    const list = readJSON(SETTINGS_FILE, []);
+    const item = list.find(s => s.key === key);
+    return res.json({ key, value: item ? item.value : null });
+  }
+});
+
+app.post('/api/settings', authorize, async (req, res) => {
+  const { key, value } = req.body;
+  if (!key) return res.status(400).json({ error: 'La clé de configuration est requise.' });
+  
+  if (dbType === 'postgres') {
+    try {
+      await pgPool.query(
+        'INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = $2',
+        [key, value]
+      );
+      return res.json({ key, value });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      await SettingsModel.findOneAndUpdate({ key }, { value }, { upsert: true, new: true });
+      return res.json({ key, value });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else {
+    const list = readJSON(SETTINGS_FILE, []);
+    const idx = list.findIndex(s => s.key === key);
+    if (idx !== -1) {
+      list[idx].value = value;
+    } else {
+      list.push({ key, value });
+    }
+    writeJSON(SETTINGS_FILE, list);
+    return res.json({ key, value });
   }
 });
 
