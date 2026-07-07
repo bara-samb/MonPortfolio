@@ -1,6 +1,6 @@
 import React from 'react';
 import { Mail } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from '@/components/Icons';
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
 
 export default function Footer() {
@@ -47,6 +47,15 @@ export default function Footer() {
             aria-label="LinkedIn"
           >
             <LinkedinIcon className="w-4 h-4" />
+          </a>
+          <a 
+            href={PERSONAL_INFO.whatsapp} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-9 h-9 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-emerald-400 hover:bg-white/10 hover:border-white/10 transition-all"
+            aria-label="WhatsApp"
+          >
+            <WhatsappIcon className="w-4 h-4" />
           </a>
           <a 
             href={`mailto:${PERSONAL_INFO.email}`} 

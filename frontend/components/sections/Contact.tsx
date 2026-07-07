@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Mail, MapPin, Send, CheckCircle2, MessageSquare } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from '@/components/Icons';
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
 
 export default function Contact() {
@@ -162,29 +162,51 @@ export default function Contact() {
                   <p className="text-slate-200 text-sm font-medium">{PERSONAL_INFO.location}</p>
                 </div>
               </div>
+
+              {/* WhatsApp Card */}
+              <div className="flex items-center gap-4 p-4 rounded-xl glass-panel border border-white/5">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                  <WhatsappIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">WhatsApp</p>
+                  <a href={PERSONAL_INFO.whatsapp} target="_blank" rel="noopener noreferrer" className="text-slate-200 hover:text-emerald-400 text-sm font-medium transition-colors">
+                    +221 78 017 16 88
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Social Grid */}
-            <div className="flex gap-4 pt-4">
-              <a 
-                href={PERSONAL_INFO.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm"
-              >
-                <GithubIcon className="w-4 h-4" />
-                GitHub
-              </a>
-              <a 
-                href={PERSONAL_INFO.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm"
-              >
-                <LinkedinIcon className="w-4 h-4" />
-                LinkedIn
-              </a>
-            </div>
+              <div className="flex gap-4 pt-4">
+                <a 
+                  href={PERSONAL_INFO.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                  GitHub
+                </a>
+                <a 
+                  href={PERSONAL_INFO.linkedin} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm"
+                >
+                  <LinkedinIcon className="w-4 h-4" />
+                  LinkedIn
+                </a>
+                <a 
+                  href={PERSONAL_INFO.whatsapp} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all font-medium text-sm text-emerald-400"
+                >
+                  <WhatsappIcon className="w-4 h-4" />
+                  WhatsApp
+                </a>
+              </div>
 
           </div>
 

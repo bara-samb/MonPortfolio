@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowDown, Mail, Network, Terminal, Shield, Download } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from '@/components/Icons';
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
 
 export default function Hero() {
@@ -120,6 +120,15 @@ export default function Hero() {
                 aria-label="LinkedIn"
               >
                 <LinkedinIcon className="w-5 h-5" />
+              </a>
+              <a
+                href={PERSONAL_INFO.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-emerald-400 transition-colors"
+                aria-label="WhatsApp"
+              >
+                <WhatsappIcon className="w-5 h-5" />
               </a>
               <a
                 href={`mailto:${PERSONAL_INFO.email}`}

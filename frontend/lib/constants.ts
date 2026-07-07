@@ -6,6 +6,7 @@ export const PERSONAL_INFO = {
   email: "maambaara56@gmail.com",
   github: "https://github.com/bara-samb",
   linkedin: "https://www.linkedin.com/in/mame-bara-samb-76a415291/",
+  whatsapp: "https://wa.me/221780171688",
   cvUrl: "/CV_Mame-Bara-Samb.pdf",
   bio: "Étudiant en Licence 3 Informatique et Télécommunications à l'UCAK, passionné par les systèmes distribués, les architectures middleware, la cybersécurité et le développement d'applications. Expérience acquise à travers des projets d'envergure, des hackathons nationaux et des certifications.",
   tagline: "Concevoir des architectures applicatives performantes et sécuriser les échanges distribués.",

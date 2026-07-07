@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   Lock, ShieldAlert, ShieldCheck, Cpu, Database, Network, BookOpen, ArrowLeft, Plus, Trash2, Edit, X, Calendar, Award, GraduationCap, Briefcase
 } from 'lucide-react';
-import { 
+import {
   getProjects, addProject, updateProject, deleteProject,
   getSkills, addSkill, updateSkill, deleteSkill,
   getTimeline, addTimelineItem, deleteTimelineItem,
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [activePasscode, setActivePasscode] = useState('');
-  
+
   // Real-time server stats
   const [cpu, setCpu] = useState(28);
   const [ram, setRam] = useState(54);
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
   const handleAddProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle || !newDesc || !newRole) return;
-    
+
     const newProj = {
       title: newTitle,
       description: newDesc,
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
       const addedProj = await addProject(newProj, activePasscode);
       setProjects(prev => [addedProj, ...prev]);
     }
-    
+
     // Reset Form
     setNewTitle('');
     setNewDesc('');
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
       const addedSkill = await addSkill(newSkill, activePasscode);
       setSkills(prev => [addedSkill, ...prev]);
     }
-    
+
     // Reset Form
     setNewSkillName('');
     setNewSkillLevel(85);
@@ -260,11 +260,10 @@ export default function AdminDashboard() {
 
         <div className="max-w-md w-full p-8 rounded-2xl glass-panel border border-white/5 shadow-2xl relative z-10 space-y-6">
           <div className="flex flex-col items-center text-center space-y-3">
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-300 ${
-              authError 
-                ? 'bg-red-500/10 border-red-500/30 text-red-500' 
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-300 ${authError
+                ? 'bg-red-500/10 border-red-500/30 text-red-500'
                 : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-            }`}>
+              }`}>
               {authError ? <ShieldAlert className="w-7 h-7" /> : <Lock className="w-7 h-7" />}
             </div>
             <div className="space-y-1">
@@ -284,14 +283,13 @@ export default function AdminDashboard() {
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
                 placeholder="Entrez le code secret..."
-                className={`w-full px-4 py-3 rounded-xl bg-slate-950 border text-center font-mono text-lg tracking-widest text-white focus:outline-none transition-colors ${
-                  authError 
-                    ? 'border-red-500 focus:ring-1 focus:ring-red-500' 
+                className={`w-full px-4 py-3 rounded-xl bg-slate-950 border text-center font-mono text-lg tracking-widest text-white focus:outline-none transition-colors ${authError
+                    ? 'border-red-500 focus:ring-1 focus:ring-red-500'
                     : 'border-white/5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500'
-                }`}
+                  }`}
                 required
               />
-              <span className="block text-[10px] text-center text-slate-500 mt-1">Saisissez "1337" ou "admin"</span>
+
             </div>
 
             <button
@@ -304,7 +302,7 @@ export default function AdminDashboard() {
           </form>
 
           <div className="flex justify-center pt-2">
-            <a 
+            <a
               href="/"
               className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors"
             >
@@ -323,7 +321,7 @@ export default function AdminDashboard() {
       <div className="absolute top-1/4 right-1/4 w-[300px] h-[300px] rounded-full radial-glow-indigo opacity-10 pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto space-y-8 relative z-10">
-        
+
         {/* Dashboard Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-white/5">
           <div className="space-y-1">
@@ -388,7 +386,7 @@ export default function AdminDashboard() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 {projects.map((proj, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="p-4 rounded-xl bg-slate-950 border border-white/5 flex items-start justify-between gap-3 hover:border-white/10 transition-colors"
                   >
@@ -425,7 +423,7 @@ export default function AdminDashboard() {
                   {editingProjectTitle !== null ? "Modifier Projet" : "Nouveau Projet"}
                 </h3>
                 {editingProjectTitle !== null && (
-                  <button 
+                  <button
                     onClick={handleCancelEditProject}
                     className="text-xs text-slate-400 hover:text-red-400 flex items-center gap-0.5"
                   >
@@ -497,7 +495,7 @@ export default function AdminDashboard() {
 
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
                 {skills.map((skill, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="p-3 rounded-xl bg-slate-950 border border-white/5 flex items-center justify-between gap-2 text-xs"
                   >
@@ -533,7 +531,7 @@ export default function AdminDashboard() {
                   {editingSkillName !== null ? "Modifier Compétence" : "Nouvelle Compétence"}
                 </h3>
                 {editingSkillName !== null && (
-                  <button 
+                  <button
                     onClick={handleCancelEditSkill}
                     className="text-xs text-slate-400 hover:text-red-400 flex items-center gap-0.5"
                   >
@@ -600,7 +598,7 @@ export default function AdminDashboard() {
 
               <div className="space-y-3">
                 {timeline.map((item, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="p-4 rounded-xl bg-slate-950 border border-white/5 flex items-start justify-between gap-3 hover:border-white/10 transition-colors"
                   >
@@ -656,7 +654,7 @@ export default function AdminDashboard() {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="space-y-1">
                   <label className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Intitulé / Titre</label>
                   <input
