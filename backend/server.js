@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || '1337';
+const ADMIN_PASSCODE = (process.env.ADMIN_PASSCODE || '1337').trim().replace(/['"]/g, '');
 
 // Detect database configuration
 const DATABASE_URL = process.env.DATABASE_URL || process.env.MONGODB_URI;
