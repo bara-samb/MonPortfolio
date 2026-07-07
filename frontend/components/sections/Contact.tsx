@@ -248,7 +248,7 @@ export default function Contact() {
                           ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
                           : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
                       }`}
-                      placeholder="Jean Dupont"
+                      placeholder="Mame Bara Samb"
                     />
                     {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name}</p>}
                   </div>
@@ -268,7 +268,7 @@ export default function Contact() {
                           ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
                           : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
                       }`}
-                      placeholder="jean.dupont@example.com"
+                      placeholder="maambaara56@gmail.com"
                     />
                     {errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
                   </div>
@@ -290,7 +290,7 @@ export default function Contact() {
                         ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
                         : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
                     }`}
-                    placeholder="Objet de votre message"
+                    placeholder="Opportunité de stage ou collaboration"
                   />
                   {errors.subject && <p className="text-red-500 text-xs mt-1 font-medium">{errors.subject}</p>}
                 </div>
@@ -311,7 +311,7 @@ export default function Contact() {
                         ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
                         : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
                     }`}
-                    placeholder="Écrivez votre message ici..."
+                    placeholder="Bonjour Mame Bara, je souhaiterais échanger avec vous à propos de..."
                   />
                   {errors.message && <p className="text-red-500 text-xs mt-1 font-medium">{errors.message}</p>}
                 </div>
