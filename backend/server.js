@@ -3,12 +3,15 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
+const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || '1337';
-const MONGODB_URI = process.env.MONGODB_URI;
+
+// Detect database configuration
+const DATABASE_URL = process.env.DATABASE_URL || process.env.MONGODB_URI;
 
 app.use(cors());
 app.use(express.json());
@@ -27,7 +30,6 @@ if (!fs.existsSync(DATA_DIR)) {
 // Initial default seed data
 const defaultProjects = [
   {
-    id: "1",
     title: "Teranga Market (GovaThon)",
     description: "Développement du backend avec Django (Python) et modélisation complète des structures de données. Projet demi-finaliste du GovaThon 2025.",
     tech: ["Python", "Django", "PostgreSQL", "Git"],
@@ -36,7 +38,6 @@ const defaultProjects = [
     featured: true
   },
   {
-    id: "2",
     title: "Site Officiel Club MET",
     description: "Conception, développement et déploiement du site officiel du Club MET en React. Gestion des projets techniques et coordination d'équipe.",
     tech: ["React", "JavaScript", "Tailwind CSS", "Git"],
@@ -45,7 +46,6 @@ const defaultProjects = [
     featured: true
   },
   {
-    id: "3",
     title: "Plateforme SI UCAK",
     description: "Développement de la plateforme de gestion du Système d'Information global de l'Université (UCAK) lors du Bootcamp MURID PRO.",
     tech: ["React", "Tailwind CSS", "Node.js", "MySQL"],
@@ -54,7 +54,6 @@ const defaultProjects = [
     featured: true
   },
   {
-    id: "4",
     title: "Health AIProduct (DOCSEN)",
     description: "Conception et développement d'un projet d'intelligence artificielle médicale lors du Hackathon DOCSEN 2025.",
     tech: ["Python", "Machine Learning", "AI API"],
@@ -63,7 +62,6 @@ const defaultProjects = [
     featured: false
   },
   {
-    id: "5",
     title: "Leunkeule Touba (Sonatel)",
     description: "Projet d'Agritech innovant conçu et développé pour moderniser l'agriculture locale lors du Hackathon Sonatel 2025.",
     tech: ["Python", "IoT", "Django"],
@@ -74,26 +72,25 @@ const defaultProjects = [
 ];
 
 const defaultSkills = [
-  { id: "1", name: "Python (Django)", category: "backend", level: 90 },
-  { id: "2", name: "Java EE / Spring Boot", category: "backend", level: 80 },
-  { id: "3", name: "JavaScript / React", category: "backend", level: 82 },
-  { id: "4", name: "PHP / MySQL", category: "backend", level: 75 },
-  { id: "5", name: "CCNA / Routage OSPF", category: "networking", level: 90 },
-  { id: "6", name: "Gestion VLAN & Subnetting", category: "networking", level: 85 },
-  { id: "7", name: "Cisco Packet Tracer", category: "networking", level: 90 },
-  { id: "8", name: "Wireshark (Analyse de trafic)", category: "networking", level: 80 },
-  { id: "9", name: "Cryptographie & PKI", category: "security", level: 82 },
-  { id: "10", name: "GnuPG / Kleopatra", category: "security", level: 75 },
-  { id: "11", name: "Administration Linux", category: "security", level: 80 },
-  { id: "12", name: "Git / GitHub", category: "tools", level: 88 },
-  { id: "13", name: "Docker", category: "tools", level: 80 },
-  { id: "14", name: "UML / Merise", category: "tools", level: 85 },
-  { id: "15", name: "Méthodes Agiles", category: "tools", level: 78 }
+  { name: "Python (Django)", category: "backend", level: 90 },
+  { name: "Java EE / Spring Boot", category: "backend", level: 80 },
+  { name: "JavaScript / React", category: "backend", level: 82 },
+  { name: "PHP / MySQL", category: "backend", level: 75 },
+  { name: "CCNA / Routage OSPF", category: "networking", level: 90 },
+  { name: "Gestion VLAN & Subnetting", category: "networking", level: 85 },
+  { name: "Cisco Packet Tracer", category: "networking", level: 90 },
+  { name: "Wireshark (Analyse de trafic)", category: "networking", level: 80 },
+  { name: "Cryptographie & PKI", category: "security", level: 82 },
+  { name: "GnuPG / Kleopatra", category: "security", level: 75 },
+  { name: "Administration Linux", category: "security", level: 80 },
+  { name: "Git / GitHub", category: "tools", level: 88 },
+  { name: "Docker", category: "tools", level: 80 },
+  { name: "UML / Merise", category: "tools", level: 85 },
+  { name: "Méthodes Agiles", category: "tools", level: 78 }
 ];
 
 const defaultTimeline = [
   {
-    id: "1",
     year: "2026",
     title: "Président du Club MET",
     institution: "Club MET (UCAK)",
@@ -101,7 +98,6 @@ const defaultTimeline = [
     type: "leadership"
   },
   {
-    id: "2",
     year: "2025 - 2026",
     title: "Licence 3 Informatique et Télécommunications (DAR)",
     institution: "Université Cheikhe Ahmadoul Khadim (UCAK), Touba",
@@ -109,7 +105,6 @@ const defaultTimeline = [
     type: "education"
   },
   {
-    id: "3",
     year: "2025",
     title: "Certification Cisco CCNA",
     institution: "Cisco Networking Academy",
@@ -117,7 +112,6 @@ const defaultTimeline = [
     type: "certification"
   },
   {
-    id: "4",
     year: "2025",
     title: "Stagiaire Informatique et Télécoms",
     institution: "École Polytechnique de Thiès (EPT)",
@@ -125,7 +119,6 @@ const defaultTimeline = [
     type: "experience"
   },
   {
-    id: "5",
     year: "2025",
     title: "Secrétaire Général du Club MET",
     institution: "Club MET (UCAK)",
@@ -133,7 +126,6 @@ const defaultTimeline = [
     type: "leadership"
   },
   {
-    id: "6",
     year: "2024 - 2025",
     title: "Licence 2 Informatique et Télécommunications",
     institution: "Université Cheikhe Ahmadoul Khadim (UCAK), Touba",
@@ -141,7 +133,6 @@ const defaultTimeline = [
     type: "education"
   },
   {
-    id: "7",
     year: "2023 - 2024",
     title: "Licence 1 Mathématiques et Informatique",
     institution: "Université Iba Der Thiam (UIDT), Thiès",
@@ -149,7 +140,6 @@ const defaultTimeline = [
     type: "education"
   },
   {
-    id: "8",
     year: "2022",
     title: "Baccalauréat Scientifique",
     institution: "Lycée de Mbacké, Mbacké",
@@ -161,7 +151,7 @@ const defaultTimeline = [
 // Helper functions for file-based DB
 function readJSON(file, defaults) {
   if (!fs.existsSync(file)) {
-    fs.writeFileSync(file, JSON.stringify(defaults, null, 2));
+    fs.writeFileSync(file, JSON.stringify(defaults.map((d, i) => ({ id: (i + 1).toString(), ...d })), null, 2));
     return defaults;
   }
   try {
@@ -176,7 +166,11 @@ function writeJSON(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
-// MongoDB Schemas & Models
+// Database Connection Orchestration
+let dbType = 'none'; // 'postgres' | 'mongodb' | 'none'
+let pgPool = null;
+
+// Initialize Mongoose model templates anyway so they compile cleanly
 const ProjectSchema = new mongoose.Schema({
   title: String,
   description: String,
@@ -203,37 +197,133 @@ const TimelineSchema = new mongoose.Schema({
 });
 const TimelineModel = mongoose.models.Timeline || mongoose.model('Timeline', TimelineSchema);
 
-let dbConnected = false;
-
-if (MONGODB_URI) {
-  mongoose.connect(MONGODB_URI)
-    .then(() => {
-      console.log('Successfully connected to MongoDB.');
-      dbConnected = true;
-      seedMongo();
-    })
-    .catch(err => {
-      console.error('MongoDB connection error, falling back to Local JSON Files:', err);
+if (DATABASE_URL) {
+  if (DATABASE_URL.startsWith('postgres://') || DATABASE_URL.startsWith('postgresql://')) {
+    dbType = 'postgres';
+    console.log('PostgreSQL database URL detected. Connecting...');
+    pgPool = new Pool({
+      connectionString: DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false // Required for Render SSL
+      }
     });
+
+    initPostgres()
+      .then(() => console.log('Successfully connected and initialized PostgreSQL.'))
+      .catch(err => {
+        console.error('PostgreSQL connection error, falling back to Local JSON Files:', err);
+        dbType = 'none';
+      });
+
+  } else if (DATABASE_URL.startsWith('mongodb://') || DATABASE_URL.startsWith('mongodb+srv://')) {
+    dbType = 'mongodb';
+    console.log('MongoDB connection URL detected. Connecting...');
+    mongoose.connect(DATABASE_URL)
+      .then(() => {
+        console.log('Successfully connected to MongoDB.');
+        seedMongo();
+      })
+      .catch(err => {
+        console.error('MongoDB connection error, falling back to Local JSON Files:', err);
+        dbType = 'none';
+      });
+  } else {
+    console.log('Unrecognized database protocol. Running on Local JSON Files storage.');
+  }
 } else {
-  console.log('No MONGODB_URI provided. Running on Local JSON Files storage.');
+  console.log('No DATABASE_URL or MONGODB_URI provided. Running on Local JSON Files storage.');
 }
 
+// --- POSTGRES DB INITIALIZATION & SEED ---
+async function initPostgres() {
+  const client = await pgPool.connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS projects (
+        id SERIAL PRIMARY KEY,
+        title TEXT,
+        description TEXT,
+        tech TEXT,
+        role TEXT,
+        github TEXT,
+        featured BOOLEAN
+      )
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS skills (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        category TEXT,
+        level INTEGER
+      )
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS timeline (
+        id SERIAL PRIMARY KEY,
+        year TEXT,
+        title TEXT,
+        institution TEXT,
+        description TEXT,
+        type TEXT
+      )
+    `);
+    
+    // Seed Projects
+    const pCountRes = await client.query('SELECT COUNT(*) FROM projects');
+    if (parseInt(pCountRes.rows[0].count, 10) === 0) {
+      for (const p of defaultProjects) {
+        await client.query(
+          'INSERT INTO projects (title, description, tech, role, github, featured) VALUES ($1, $2, $3, $4, $5, $6)',
+          [p.title, p.description, JSON.stringify(p.tech), p.role, p.github, p.featured]
+        );
+      }
+      console.log('Seeded projects in PostgreSQL.');
+    }
+
+    // Seed Skills
+    const sCountRes = await client.query('SELECT COUNT(*) FROM skills');
+    if (parseInt(sCountRes.rows[0].count, 10) === 0) {
+      for (const s of defaultSkills) {
+        await client.query(
+          'INSERT INTO skills (name, category, level) VALUES ($1, $2, $3)',
+          [s.name, s.category, s.level]
+        );
+      }
+      console.log('Seeded skills in PostgreSQL.');
+    }
+
+    // Seed Timeline
+    const tCountRes = await client.query('SELECT COUNT(*) FROM timeline');
+    if (parseInt(tCountRes.rows[0].count, 10) === 0) {
+      for (const t of defaultTimeline) {
+        await client.query(
+          'INSERT INTO timeline (year, title, institution, description, type) VALUES ($1, $2, $3, $4, $5)',
+          [t.year, t.title, t.institution, t.description, t.type]
+        );
+      }
+      console.log('Seeded timeline in PostgreSQL.');
+    }
+  } finally {
+    client.release();
+  }
+}
+
+// --- MONGODB SEED ---
 async function seedMongo() {
   try {
     const pCount = await ProjectModel.countDocuments();
     if (pCount === 0) {
-      await ProjectModel.insertMany(defaultProjects.map(({id, ...rest}) => rest));
+      await ProjectModel.insertMany(defaultProjects);
       console.log('Seeded projects in MongoDB.');
     }
     const sCount = await SkillModel.countDocuments();
     if (sCount === 0) {
-      await SkillModel.insertMany(defaultSkills.map(({id, ...rest}) => rest));
+      await SkillModel.insertMany(defaultSkills);
       console.log('Seeded skills in MongoDB.');
     }
     const tCount = await TimelineModel.countDocuments();
     if (tCount === 0) {
-      await TimelineModel.insertMany(defaultTimeline.map(({id, ...rest}) => rest));
+      await TimelineModel.insertMany(defaultTimeline);
       console.log('Seeded timeline in MongoDB.');
     }
   } catch (err) {
@@ -262,10 +352,33 @@ app.post('/api/auth/verify', (req, res) => {
 // --- PROJECTS ROUTES ---
 
 app.get('/api/projects', async (req, res) => {
-  if (dbConnected) {
+  if (dbType === 'postgres') {
     try {
-      const items = await ProjectModel.find();
-      return res.json(items.map(item => ({ id: item._id.toString(), title: item.title, description: item.description, tech: item.tech, role: item.role, github: item.github, featured: item.featured })));
+      const resDb = await pgPool.query('SELECT * FROM projects ORDER BY id DESC');
+      return res.json(resDb.rows.map(row => ({
+        id: row.id.toString(),
+        title: row.title,
+        description: row.description,
+        tech: JSON.parse(row.tech || '[]'),
+        role: row.role,
+        github: row.github,
+        featured: row.featured
+      })));
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const items = await ProjectModel.find().sort({ _id: -1 });
+      return res.json(items.map(item => ({
+        id: item._id.toString(),
+        title: item.title,
+        description: item.description,
+        tech: item.tech,
+        role: item.role,
+        github: item.github,
+        featured: item.featured
+      })));
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -275,19 +388,29 @@ app.get('/api/projects', async (req, res) => {
 });
 
 app.post('/api/projects', authorize, async (req, res) => {
-  const newItem = req.body;
-  if (dbConnected) {
+  const { title, description, tech, role, github, featured } = req.body;
+  if (dbType === 'postgres') {
     try {
-      const item = new ProjectModel(newItem);
+      const insertRes = await pgPool.query(
+        'INSERT INTO projects (title, description, tech, role, github, featured) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+        [title, description, JSON.stringify(tech || []), role, github, featured || false]
+      );
+      return res.status(201).json({ id: insertRes.rows[0].id.toString(), title, description, tech, role, github, featured });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const item = new ProjectModel({ title, description, tech, role, github, featured });
       const saved = await item.save();
-      return res.status(201).json({ id: saved._id.toString(), ...newItem });
+      return res.status(201).json({ id: saved._id.toString(), title, description, tech, role, github, featured });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   } else {
     const list = readJSON(PROJECTS_FILE, defaultProjects);
-    const added = { id: Date.now().toString(), ...newItem };
-    list.push(added);
+    const added = { id: Date.now().toString(), title, description, tech, role, github, featured };
+    list.unshift(added);
     writeJSON(PROJECTS_FILE, list);
     return res.status(201).json(added);
   }
@@ -295,12 +418,23 @@ app.post('/api/projects', authorize, async (req, res) => {
 
 app.put('/api/projects/:id', authorize, async (req, res) => {
   const { id } = req.params;
-  const updatedItem = req.body;
-  if (dbConnected) {
+  const { title, description, tech, role, github, featured } = req.body;
+  if (dbType === 'postgres') {
     try {
-      const updated = await ProjectModel.findByIdAndUpdate(id, updatedItem, { new: true });
+      const updateRes = await pgPool.query(
+        'UPDATE projects SET title = $1, description = $2, tech = $3, role = $4, github = $5, featured = $6 WHERE id = $7 RETURNING *',
+        [title, description, JSON.stringify(tech || []), role, github, featured || false, id]
+      );
+      if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Projet non trouvé.' });
+      return res.json({ id, title, description, tech, role, github, featured });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const updated = await ProjectModel.findByIdAndUpdate(id, { title, description, tech, role, github, featured }, { new: true });
       if (!updated) return res.status(404).json({ error: 'Projet non trouvé.' });
-      return res.json({ id: updated._id.toString(), ...updatedItem });
+      return res.json({ id: updated._id.toString(), title, description, tech, role, github, featured });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -308,7 +442,7 @@ app.put('/api/projects/:id', authorize, async (req, res) => {
     const list = readJSON(PROJECTS_FILE, defaultProjects);
     const idx = list.findIndex(item => item.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Projet non trouvé.' });
-    list[idx] = { id, ...updatedItem };
+    list[idx] = { id, title, description, tech, role, github, featured };
     writeJSON(PROJECTS_FILE, list);
     return res.json(list[idx]);
   }
@@ -316,7 +450,15 @@ app.put('/api/projects/:id', authorize, async (req, res) => {
 
 app.delete('/api/projects/:id', authorize, async (req, res) => {
   const { id } = req.params;
-  if (dbConnected) {
+  if (dbType === 'postgres') {
+    try {
+      const deleteRes = await pgPool.query('DELETE FROM projects WHERE id = $1', [id]);
+      if (deleteRes.rowCount === 0) return res.status(404).json({ error: 'Projet non trouvé.' });
+      return res.json({ message: 'Projet supprimé avec succès.' });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
     try {
       const deleted = await ProjectModel.findByIdAndDelete(id);
       if (!deleted) return res.status(404).json({ error: 'Projet non trouvé.' });
@@ -337,10 +479,27 @@ app.delete('/api/projects/:id', authorize, async (req, res) => {
 // --- SKILLS ROUTES ---
 
 app.get('/api/skills', async (req, res) => {
-  if (dbConnected) {
+  if (dbType === 'postgres') {
+    try {
+      const resDb = await pgPool.query('SELECT * FROM skills ORDER BY id ASC');
+      return res.json(resDb.rows.map(row => ({
+        id: row.id.toString(),
+        name: row.name,
+        category: row.category,
+        level: row.level
+      })));
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
     try {
       const items = await SkillModel.find();
-      return res.json(items.map(item => ({ id: item._id.toString(), name: item.name, category: item.category, level: item.level })));
+      return res.json(items.map(item => ({
+        id: item._id.toString(),
+        name: item.name,
+        category: item.category,
+        level: item.level
+      })));
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -350,19 +509,29 @@ app.get('/api/skills', async (req, res) => {
 });
 
 app.post('/api/skills', authorize, async (req, res) => {
-  const newItem = req.body;
-  if (dbConnected) {
+  const { name, category, level } = req.body;
+  if (dbType === 'postgres') {
     try {
-      const item = new SkillModel(newItem);
+      const insertRes = await pgPool.query(
+        'INSERT INTO skills (name, category, level) VALUES ($1, $2, $3) RETURNING id',
+        [name, category, level]
+      );
+      return res.status(201).json({ id: insertRes.rows[0].id.toString(), name, category, level });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const item = new SkillModel({ name, category, level });
       const saved = await item.save();
-      return res.status(201).json({ id: saved._id.toString(), ...newItem });
+      return res.status(201).json({ id: saved._id.toString(), name, category, level });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   } else {
     const list = readJSON(SKILLS_FILE, defaultSkills);
-    const added = { id: Date.now().toString(), ...newItem };
-    list.push(added);
+    const added = { id: Date.now().toString(), name, category, level };
+    list.unshift(added);
     writeJSON(SKILLS_FILE, list);
     return res.status(201).json(added);
   }
@@ -370,12 +539,23 @@ app.post('/api/skills', authorize, async (req, res) => {
 
 app.put('/api/skills/:id', authorize, async (req, res) => {
   const { id } = req.params;
-  const updatedItem = req.body;
-  if (dbConnected) {
+  const { name, category, level } = req.body;
+  if (dbType === 'postgres') {
     try {
-      const updated = await SkillModel.findByIdAndUpdate(id, updatedItem, { new: true });
+      const updateRes = await pgPool.query(
+        'UPDATE skills SET name = $1, category = $2, level = $3 WHERE id = $4 RETURNING *',
+        [name, category, level, id]
+      );
+      if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Compétence non trouvée.' });
+      return res.json({ id, name, category, level });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const updated = await SkillModel.findByIdAndUpdate(id, { name, category, level }, { new: true });
       if (!updated) return res.status(404).json({ error: 'Compétence non trouvée.' });
-      return res.json({ id: updated._id.toString(), ...updatedItem });
+      return res.json({ id: updated._id.toString(), name, category, level });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -383,7 +563,7 @@ app.put('/api/skills/:id', authorize, async (req, res) => {
     const list = readJSON(SKILLS_FILE, defaultSkills);
     const idx = list.findIndex(item => item.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Compétence non trouvée.' });
-    list[idx] = { id, ...updatedItem };
+    list[idx] = { id, name, category, level };
     writeJSON(SKILLS_FILE, list);
     return res.json(list[idx]);
   }
@@ -391,7 +571,15 @@ app.put('/api/skills/:id', authorize, async (req, res) => {
 
 app.delete('/api/skills/:id', authorize, async (req, res) => {
   const { id } = req.params;
-  if (dbConnected) {
+  if (dbType === 'postgres') {
+    try {
+      const deleteRes = await pgPool.query('DELETE FROM skills WHERE id = $1', [id]);
+      if (deleteRes.rowCount === 0) return res.status(404).json({ error: 'Compétence non trouvée.' });
+      return res.json({ message: 'Compétence supprimée avec succès.' });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
     try {
       const deleted = await SkillModel.findByIdAndDelete(id);
       if (!deleted) return res.status(404).json({ error: 'Compétence non trouvée.' });
@@ -412,10 +600,31 @@ app.delete('/api/skills/:id', authorize, async (req, res) => {
 // --- TIMELINE ROUTES ---
 
 app.get('/api/timeline', async (req, res) => {
-  if (dbConnected) {
+  if (dbType === 'postgres') {
     try {
-      const items = await TimelineModel.find();
-      return res.json(items.map(item => ({ id: item._id.toString(), year: item.year, title: item.title, institution: item.institution, description: item.description, type: item.type })));
+      const resDb = await pgPool.query('SELECT * FROM timeline ORDER BY id DESC');
+      return res.json(resDb.rows.map(row => ({
+        id: row.id.toString(),
+        year: row.year,
+        title: row.title,
+        institution: row.institution,
+        description: row.description,
+        type: row.type
+      })));
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const items = await TimelineModel.find().sort({ _id: -1 });
+      return res.json(items.map(item => ({
+        id: item._id.toString(),
+        year: item.year,
+        title: item.title,
+        institution: item.institution,
+        description: item.description,
+        type: item.type
+      })));
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -425,19 +634,29 @@ app.get('/api/timeline', async (req, res) => {
 });
 
 app.post('/api/timeline', authorize, async (req, res) => {
-  const newItem = req.body;
-  if (dbConnected) {
+  const { year, title, institution, description, type } = req.body;
+  if (dbType === 'postgres') {
     try {
-      const item = new TimelineModel(newItem);
+      const insertRes = await pgPool.query(
+        'INSERT INTO timeline (year, title, institution, description, type) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+        [year, title, institution, description, type]
+      );
+      return res.status(201).json({ id: insertRes.rows[0].id.toString(), year, title, institution, description, type });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const item = new TimelineModel({ year, title, institution, description, type });
       const saved = await item.save();
-      return res.status(201).json({ id: saved._id.toString(), ...newItem });
+      return res.status(201).json({ id: saved._id.toString(), year, title, institution, description, type });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   } else {
     const list = readJSON(TIMELINE_FILE, defaultTimeline);
-    const added = { id: Date.now().toString(), ...newItem };
-    list.push(added);
+    const added = { id: Date.now().toString(), year, title, institution, description, type };
+    list.unshift(added);
     writeJSON(TIMELINE_FILE, list);
     return res.status(201).json(added);
   }
@@ -445,12 +664,23 @@ app.post('/api/timeline', authorize, async (req, res) => {
 
 app.put('/api/timeline/:id', authorize, async (req, res) => {
   const { id } = req.params;
-  const updatedItem = req.body;
-  if (dbConnected) {
+  const { year, title, institution, description, type } = req.body;
+  if (dbType === 'postgres') {
     try {
-      const updated = await TimelineModel.findByIdAndUpdate(id, updatedItem, { new: true });
+      const updateRes = await pgPool.query(
+        'UPDATE timeline SET year = $1, title = $2, institution = $3, description = $4, type = $5 WHERE id = $6 RETURNING *',
+        [year, title, institution, description, type, id]
+      );
+      if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Élément du parcours non trouvé.' });
+      return res.json({ id, year, title, institution, description, type });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
+    try {
+      const updated = await TimelineModel.findByIdAndUpdate(id, { year, title, institution, description, type }, { new: true });
       if (!updated) return res.status(404).json({ error: 'Élément du parcours non trouvé.' });
-      return res.json({ id: updated._id.toString(), ...updatedItem });
+      return res.json({ id: updated._id.toString(), year, title, institution, description, type });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -458,7 +688,7 @@ app.put('/api/timeline/:id', authorize, async (req, res) => {
     const list = readJSON(TIMELINE_FILE, defaultTimeline);
     const idx = list.findIndex(item => item.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Élément du parcours non trouvé.' });
-    list[idx] = { id, ...updatedItem };
+    list[idx] = { id, year, title, institution, description, type };
     writeJSON(TIMELINE_FILE, list);
     return res.json(list[idx]);
   }
@@ -466,7 +696,15 @@ app.put('/api/timeline/:id', authorize, async (req, res) => {
 
 app.delete('/api/timeline/:id', authorize, async (req, res) => {
   const { id } = req.params;
-  if (dbConnected) {
+  if (dbType === 'postgres') {
+    try {
+      const deleteRes = await pgPool.query('DELETE FROM timeline WHERE id = $1', [id]);
+      if (deleteRes.rowCount === 0) return res.status(404).json({ error: 'Élément du parcours non trouvé.' });
+      return res.json({ message: 'Élément du parcours supprimé avec succès.' });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  } else if (dbType === 'mongodb') {
     try {
       const deleted = await TimelineModel.findByIdAndDelete(id);
       if (!deleted) return res.status(404).json({ error: 'Élément du parcours non trouvé.' });
