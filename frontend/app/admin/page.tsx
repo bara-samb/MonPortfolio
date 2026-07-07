@@ -600,16 +600,16 @@ export default function AdminDashboard() {
                 {timeline.map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-xl bg-slate-950 border border-white/5 flex items-start justify-between gap-3 hover:border-white/10 transition-colors"
+                    className="p-4 rounded-xl bg-slate-950 border border-white/5 flex items-start justify-between gap-3 hover:border-white/10 transition-colors w-full min-w-0"
                   >
-                    <div className="flex gap-3 items-start min-w-0">
+                    <div className="flex gap-3 items-start min-w-0 w-full">
                       <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
                         {getTimelineIcon(item.type)}
                       </div>
-                      <div className="space-y-0.5 min-w-0">
-                        <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>
-                        <p className="text-[10px] text-slate-300 font-semibold">{item.institution} — <span className="font-mono text-slate-500 text-[9px]">{item.year}</span></p>
-                        <p className="text-[10px] text-slate-400 line-clamp-1">{item.description}</p>
+                      <div className="space-y-1 min-w-0 flex-1">
+                        <h4 className="text-xs font-bold text-white break-words">{item.title}</h4>
+                        <p className="text-[10px] text-slate-300 font-semibold break-words">{item.institution} — <span className="font-mono text-slate-500 text-[9px]">{item.year}</span></p>
+                        <p className="text-[10px] text-slate-400 break-words line-clamp-2">{item.description}</p>
                       </div>
                     </div>
 
@@ -628,7 +628,7 @@ export default function AdminDashboard() {
             <div className="lg:col-span-4 p-6 rounded-2xl glass-panel border border-white/5">
               <h3 className="text-md font-bold text-white mb-4">Nouvel Événement</h3>
               <form onSubmit={handleAddTimeline} className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <label className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Année / Période</label>
                     <input
