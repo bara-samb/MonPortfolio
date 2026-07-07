@@ -1,31 +1,50 @@
-import React from 'react';
-import { ArrowDown, Mail, Network, Terminal, Shield } from 'lucide-react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { ArrowDown, Mail, Network, Terminal, Shield, Download } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
 
 export default function Hero() {
+  const [visibleLines, setVisibleLines] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleLines(prev => {
+        if (prev >= 6) {
+          clearInterval(interval);
+          return 6;
+        }
+        return prev + 1;
+      });
+    }, 120); // Fast typing sequence
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section id="accueil" className="relative min-h-[90vh] flex items-center pt-24 pb-16 px-6 overflow-hidden">
+    <section id="accueil" className="relative min-h-[90vh] flex items-center pt-24 pb-32 sm:pb-36 px-6 overflow-hidden">
       {/* Background Lights */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full radial-glow z-0 animate-pulse-slow"></div>
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[300px] h-[300px] rounded-full radial-glow-indigo z-0 animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
 
       <div className="max-w-6xl mx-auto w-full grid md:grid-cols-12 gap-12 items-center relative z-10">
-        
+
         {/* Left Column: Info & Action */}
         <div className="md:col-span-7 flex flex-col items-start text-left space-y-6">
-          
-          {/* Availability Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-xs font-semibold text-sky-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            <span>{PERSONAL_INFO.status}</span>
+
+          {/* Status Badges */}
+          <div className="flex flex-wrap gap-2.5 items-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/25 text-xs font-semibold text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span>{PERSONAL_INFO.status}</span>
+            </div>
+
           </div>
 
           {/* Heading */}
           <div className="space-y-2">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-none">
-              Salut, je suis <br />
-              <span className="bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 {PERSONAL_INFO.name}
               </span>
             </h1>
@@ -39,35 +58,43 @@ export default function Hero() {
             {PERSONAL_INFO.bio}
           </p>
 
-          {/* Specialization Tags */}
+          {/* Specialization Tags with Green Glow Hover Shine */}
           <div className="flex flex-wrap gap-3 py-2">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium">
-              <Terminal className="w-3.5 h-3.5 text-sky-400" />
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-300 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-default">
+              <Terminal className="w-3.5 h-3.5 text-emerald-400" />
               Systèmes Répartis (DAR)
             </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium">
-              <Network className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-300 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-default">
+              <Network className="w-3.5 h-3.5 text-emerald-400" />
               Cisco CCNA Certifié
             </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium">
-              <Shield className="w-3.5 h-3.5 text-purple-400" />
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-300 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-default">
+              <Shield className="w-3.5 h-3.5 text-emerald-400" />
               Réseaux & Sécurité
             </span>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4 pt-4 w-full sm:w-auto">
-            <a 
-              href="#projets" 
-              className="flex-1 sm:flex-initial text-center px-6 py-3.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-sky-500/10 hover:shadow-sky-500/20"
+            <a
+              href="#projets"
+              className="flex-1 sm:flex-initial text-center px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20"
             >
               Voir mes projets
             </a>
-            <a 
-              href="#contact" 
+            <a
+              href="#contact"
               className="flex-1 sm:flex-initial text-center px-6 py-3.5 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 hover:border-white/20 transition-all"
             >
               Me contacter
+            </a>
+            <a
+              href={PERSONAL_INFO.cvUrl}
+              download
+              className="flex-1 sm:flex-initial text-center px-6 py-3.5 text-sky-400 border border-sky-400/30 rounded-xl hover:bg-sky-400 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 font-bold"
+            >
+              <Download className="w-5 h-5" />
+              Télécharger mon CV
             </a>
           </div>
 
@@ -76,26 +103,26 @@ export default function Hero() {
             <span className="text-xs uppercase tracking-wider font-semibold">Suivez-moi</span>
             <div className="w-12 h-[1px] bg-slate-800"></div>
             <div className="flex items-center gap-3">
-              <a 
-                href={PERSONAL_INFO.github} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href={PERSONAL_INFO.github}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
                 aria-label="GitHub"
               >
                 <GithubIcon className="w-5 h-5" />
               </a>
-              <a 
-                href={PERSONAL_INFO.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href={PERSONAL_INFO.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
                 aria-label="LinkedIn"
               >
                 <LinkedinIcon className="w-5 h-5" />
               </a>
-              <a 
-                href={`mailto:${PERSONAL_INFO.email}`} 
+              <a
+                href={`mailto:${PERSONAL_INFO.email}`}
                 className="hover:text-white transition-colors"
                 aria-label="Email"
               >
@@ -106,80 +133,106 @@ export default function Hero() {
 
         </div>
 
-        {/* Right Column: Interactive Animated SVG Architecture */}
-        <div className="md:col-span-5 hidden md:block relative animate-float">
-          <div className="w-full aspect-square max-w-[420px] mx-auto rounded-3xl glass-panel border border-white/5 flex items-center justify-center p-8 relative overflow-hidden shadow-2xl">
-            {/* Ambient inner glow */}
-            <div className="absolute inset-0 bg-radial-gradient from-sky-500/5 via-transparent to-transparent"></div>
-            
-            {/* Core network visualization SVG */}
-            <svg viewBox="0 0 200 200" className="w-full h-full text-sky-500/20" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="skyGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0" />
-                </radialGradient>
-                <radialGradient id="indigoGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#6366f1" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-                </radialGradient>
-              </defs>
+        {/* Right Column: Photo & Terminal Stack */}
+        <div className="md:col-span-5 flex flex-col items-center gap-6 w-full mt-8 md:mt-0">
 
-              {/* Connecting wires/lines */}
-              <line x1="100" y1="40" x2="50" y2="90" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.5" />
-              <line x1="100" y1="40" x2="150" y2="90" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.5" />
-              <line x1="50" y1="90" x2="100" y2="150" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.5" />
-              <line x1="150" y1="90" x2="100" y2="150" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.5" />
-              <line x1="50" y1="90" x2="150" y2="90" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.5" strokeDasharray="3 3" />
-              <line x1="100" y1="40" x2="100" y2="150" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+          {/* Photo Card */}
+          <div className="w-full max-w-[340px] rounded-3xl glass-panel border border-white/5 p-5 relative overflow-hidden shadow-2xl">
+            <div className="absolute inset-0 bg-radial-gradient from-emerald-500/5 via-transparent to-transparent pointer-events-none"></div>
 
-              {/* Glowing backdrops for nodes */}
-              <circle cx="100" cy="40" r="22" fill="url(#skyGlow)" className="animate-pulse" />
-              <circle cx="50" cy="90" r="22" fill="url(#indigoGlow)" className="animate-pulse" style={{ animationDelay: '1.5s' }} />
-              <circle cx="150" cy="90" r="22" fill="url(#indigoGlow)" className="animate-pulse" style={{ animationDelay: '3s' }} />
-              <circle cx="100" cy="150" r="22" fill="url(#skyGlow)" className="animate-pulse" style={{ animationDelay: '0.7s' }} />
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-white/10 group bg-slate-950">
+              <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_12px_#10b981] opacity-70 animate-scan z-20"></div>
 
-              {/* Communication rings (animated) */}
-              <circle cx="100" cy="40" r="8" fill="none" stroke="#38bdf8" strokeWidth="1" opacity="0.8">
-                <animate attributeName="r" values="8;18;8" dur="4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.8;0;0.8" dur="4s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="100" cy="150" r="8" fill="none" stroke="#38bdf8" strokeWidth="1" opacity="0.8">
-                <animate attributeName="r" values="8;18;8" dur="4s" repeatCount="indefinite" begin="1s" />
-                <animate attributeName="opacity" values="0.8;0;0.8" dur="4s" repeatCount="indefinite" begin="1s" />
-              </circle>
+              <img
+                src="/monProfile.jpeg"
+                alt="Mame Bara Samb"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
 
-              {/* Node bodies */}
-              <circle cx="100" cy="40" r="6" fill="#0ea5e9" stroke="#030712" strokeWidth="2" />
-              <circle cx="50" cy="90" r="6" fill="#6366f1" stroke="#030712" strokeWidth="2" />
-              <circle cx="150" cy="90" r="6" fill="#6366f1" stroke="#030712" strokeWidth="2" />
-              <circle cx="100" cy="150" r="6" fill="#0ea5e9" stroke="#030712" strokeWidth="2" />
+              <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-emerald-400 z-10"></div>
+              <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-emerald-400 z-10"></div>
+              <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-emerald-400 z-10"></div>
+              <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-emerald-400 z-10"></div>
 
-              {/* Data packet flows */}
-              <circle cx="100" cy="40" r="2.5" fill="#f8fafc">
-                <animateMotion path="M 0 0 L -50 50 L 50 110 L 0 0" dur="6s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="100" cy="40" r="2.5" fill="#38bdf8">
-                <animateMotion path="M 0 0 L 50 50 L -50 110 L 0 0" dur="5s" repeatCount="indefinite" begin="2.5s" />
-              </circle>
-            </svg>
-
-            {/* Float tags */}
-            <div className="absolute top-6 left-6 px-3 py-1.5 rounded-lg bg-[#030712]/80 border border-white/5 text-[10px] text-slate-400 font-mono flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
-              API Gateway
-            </div>
-            <div className="absolute bottom-6 right-6 px-3 py-1.5 rounded-lg bg-[#030712]/80 border border-white/5 text-[10px] text-slate-400 font-mono flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-              CCNA Subnetting
+              <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded bg-[#030712]/80 backdrop-blur-md border border-white/5 text-[8px] sm:text-[9px] text-slate-400 font-mono flex items-center gap-1 sm:gap-1.5 shadow-md z-10">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                PRESIDENT @ CLUB MET
+              </div>
+              <div className="absolute top-3 sm:top-4 right-3 sm:top-4 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded bg-[#030712]/80 backdrop-blur-md border border-white/5 text-[8px] sm:text-[9px] text-slate-400 font-mono flex items-center gap-1 sm:gap-1.5 shadow-md z-10">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                L3 DAR (UCAK)
+              </div>
             </div>
           </div>
+
+          {/* Terminal Card (French, Clean & High Precision) */}
+          <div className="w-full max-w-[340px] rounded-3xl glass-panel border border-white/5 p-5 relative overflow-hidden shadow-2xl">
+            <div className="p-4 rounded-xl bg-slate-950/80 border border-white/5 font-mono text-[10px] space-y-1.5 text-slate-400 min-h-[145px]">
+              <div className="flex items-center justify-between text-[11px] font-bold text-white border-b border-white/5 pb-1 mb-2">
+
+                {visibleLines < 6 && <span className="animate-pulse text-emerald-400">_</span>}
+              </div>
+
+              {visibleLines >= 1 && (
+                <div className="flex justify-between">
+                  <span>IDENTITÉ :</span>
+                  <span className="text-white">MAME BARA SAMB</span>
+                </div>
+              )}
+
+              {visibleLines >= 2 && (
+                <div className="flex justify-between">
+                  <span>SPÉCIALITÉ :</span>
+                  <span className="text-emerald-400 text-right">L3 INFORMATIQUE DAR (UCAK)</span>
+                </div>
+              )}
+
+              {visibleLines >= 3 && (
+                <div className="flex justify-between">
+                  <span>CERTIFICATION :</span>
+                  <span className="text-cyan-300 font-semibold">CISCO CCNA (OPÉRATIONNELLE)</span>
+                </div>
+              )}
+
+              {visibleLines >= 4 && (
+                <div className="flex justify-between">
+                  <span>CODE D'ACCÈS :</span>
+                  <span className="text-slate-600">••••••••••••••</span>
+                </div>
+              )}
+
+              {visibleLines >= 5 && (
+                <div className="border-t border-white/5 pt-2 mt-2 space-y-1">
+                  <div className="text-white font-bold text-[9px] uppercase tracking-wider">LANGUES SYSTÈME :</div>
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[9px]">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">WOLOF :</span>
+                      <span className="text-[#a855f7] font-semibold">MATERNEL</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">FRANÇAIS :</span>
+                      <span className="text-[#a855f7] font-semibold">COURANT</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">ANGLAIS :</span>
+                      <span className="text-[#a855f7] font-semibold">TECHNIQUE</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">ARABE :</span>
+                      <span className="text-[#a855f7] font-semibold">AISÉ</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
 
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-slate-500 z-10">
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-slate-500 z-10">
         <span className="text-[10px] uppercase tracking-widest font-semibold">Défiler</span>
         <ArrowDown className="w-4 h-4 animate-bounce" />
       </div>

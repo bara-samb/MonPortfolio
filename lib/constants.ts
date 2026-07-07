@@ -1,110 +1,149 @@
 export const PERSONAL_INFO = {
   name: "Mame Bara Samb",
-  title: "Développeur Backend & Ingénieur Systèmes/Réseaux",
+  title: "Développeur d'Applications Réparties",
   subtitle: "Étudiant en L3 Informatique & Télécommunications (DAR)",
-  location: "Dakar, Sénégal",
-  email: "mamebara.samb@ucak.edu.sn",
-  github: "https://github.com/mamebara-samb",
-  linkedin: "https://linkedin.com/in/mame-bara-samb",
-  cvUrl: "#", // Placeholder for actual CV
-  bio: "Passionné par la conception de systèmes distribués, le développement backend robuste et l'administration réseau. Fortement investi dans les technologies d'automatisation, de conteneurisation et l'ingénierie des infrastructures modernes.",
-  tagline: "Bâtir des architectures backend performantes et connecter les systèmes de demain.",
-  status: "Disponible pour un stage ou une alternance"
+  location: "Touba, Sénégal",
+  email: "maambaara56@gmail.com",
+  github: "https://github.com/bara-samb",
+  linkedin: "https://www.linkedin.com/in/mame-bara-samb-76a415291/",
+  cvUrl: "/CV_Mame-Bara-Samb.pdf",
+  bio: "Étudiant en Licence 3 Informatique et Télécommunications à l'UCAK, passionné par les systèmes distribués, les architectures middleware, la cybersécurité et le développement d'applications. Expérience acquise à travers des projets d'envergure, des hackathons nationaux et des certifications.",
+  tagline: "Concevoir des architectures applicatives performantes et sécuriser les échanges distribués.",
+  status: "Disponible pour un stage de fin d'études / Alternance"
 };
 
 export const SKILL_CATEGORIES = [
-  { id: "backend", name: "Backend & Systèmes" },
-  { id: "networking", name: "Réseaux & Infrastructure" },
-  { id: "frontend", name: "Frontend & UI" },
-  { id: "tools", name: "Outils & DevOps" }
+  { id: "backend", name: "Développement & Architectures" },
+  { id: "networking", name: "Réseaux & Télécoms" },
+  { id: "security", name: "Sécurité & Administration" },
+  {
+    id: "tools", name: "Outils & Méthodologies"
+  }
 ];
 
 export const SKILLS = [
-  // Backend
-  { name: "Python (Django / FastAPI)", category: "backend", level: 90 },
-  { name: "Java (Spring Boot / JEE)", category: "backend", level: 75 },
-  { name: "C / C++ (Système)", category: "backend", level: 70 },
-  { name: "PostgreSQL / MySQL", category: "backend", level: 85 },
-  { name: "Microservices & REST APIs", category: "backend", level: 80 },
+  // Développement
+  { name: "Python (Django)", category: "backend", level: 90 },
+  { name: "Java EE / Spring Boot", category: "backend", level: 80 },
+  { name: "JavaScript / React", category: "backend", level: 82 },
+  { name: "PHP / MySQL", category: "backend", level: 75 },
 
-  // Networking
-  { name: "Routage & Commutation (CCNA)", category: "networking", level: 95 },
-  { name: "Protocoles (OSPF, BGP, VLANs, TCP/IP)", category: "networking", level: 90 },
-  { name: "Sécurité Réseau & VPN", category: "networking", level: 80 },
-  { name: "Wireshark & Analyse de paquets", category: "networking", level: 85 },
+  // Réseaux
+  { name: "CCNA / Routage OSPF", category: "networking", level: 90 },
+  { name: "Gestion VLAN & Subnetting", category: "networking", level: 85 },
+  { name: "Cisco Packet Tracer", category: "networking", level: 90 },
+  { name: "Wireshark (Analyse de trafic)", category: "networking", level: 80 },
 
-  // Frontend
-  { name: "React / Next.js", category: "frontend", level: 75 },
-  { name: "TypeScript / JavaScript", category: "frontend", level: 80 },
-  { name: "Tailwind CSS", category: "frontend", level: 85 },
-  { name: "HTML5 / CSS3", category: "frontend", level: 90 },
+  // Sécurité
+  { name: "Cryptographie & PKI", category: "security", level: 82 },
+  { name: "GnuPG / Kleopatra", category: "security", level: 75 },
+  { name: "Administration Linux", category: "security", level: 80 },
 
-  // Tools & DevOps
-  { name: "Docker & Containerisation", category: "tools", level: 85 },
-  { name: "Git & GitHub (CI/CD)", category: "tools", level: 88 },
-  { name: "Linux Administration (Debian/Ubuntu)", category: "tools", level: 80 },
-  { name: "Ansible / Automatisation", category: "tools", level: 65 }
+  // Outils
+  { name: "Git / GitHub", category: "tools", level: 88 },
+  { name: "Docker", category: "tools", level: 80 },
+  { name: "UML / Merise", category: "tools", level: 85 },
+  { name: "Méthodes Agiles", category: "tools", level: 78 }
 ];
 
 export const PROJECTS = [
   {
-    title: "Teranga Market",
-    description: "Une plateforme e-commerce multi-vendeurs moderne conçue avec une architecture backend Django robuste et une API REST performante.",
-    details: "Développement d'un backend scalable avec Django REST Framework, incluant la gestion complète du panier, un système d'authentification JWT sécurisé, la recherche élastique d'articles, et l'intégration de passerelles de paiement locales. Conteneurisé intégralement avec Docker.",
-    tech: ["Python", "Django", "PostgreSQL", "Docker", "JWT", "Redis"],
-    role: "Architecte Backend & DevOps",
+    title: "Teranga Market (GovaThon)",
+    description: "Développement du backend avec Django (Python) et modélisation complète des structures de données. Projet demi-finaliste du GovaThon 2025.",
+    tech: ["Python", "Django", "PostgreSQL", "Git"],
+    role: "Développeur Full-Stack",
     github: "https://github.com/mamebara-samb/teranga-market",
     featured: true
   },
   {
+    title: "Site Officiel Club MET",
+    description: "Conception, développement et déploiement du site officiel du Club MET en React. Gestion des projets techniques et coordination d'équipe.",
+    tech: ["React", "JavaScript", "Tailwind CSS", "Git"],
+    role: "Développeur Web & Gestionnaire",
+    github: "https://github.com/mamebara-samb/club-met-website",
+    featured: true
+  },
+  {
     title: "Plateforme SI UCAK",
-    description: "Système d'Information centralisé pour la gestion académique des étudiants, des inscriptions et de la facturation.",
-    details: "Participation à la conception de la base de données relationnelle et au développement des modules de gestion des notes et de génération automatique de relevés de notes au format PDF. Interface réactive développée sous React.",
-    tech: ["Java", "Spring Boot", "React", "MySQL", "Tailwind CSS"],
-    role: "Développeur Fullstack",
+    description: "Développement de la plateforme de gestion du Système d'Information global de l'Université (UCAK) lors du Bootcamp MURID PRO.",
+    tech: ["React", "Tailwind CSS", "Node.js", "MySQL"],
+    role: "Développeur (Participant)",
     github: "https://github.com/mamebara-samb/si-ucak",
     featured: true
   },
   {
-    title: "Simulateur de Routage Dynamique",
-    description: "Projet de modélisation réseau implémentant un protocole de routage à vecteur de distance simplifié en Python.",
-    details: "Création d'une application de simulation visuelle démontrant la convergence de tables de routage, la détection de pannes de liens, et l'évitement de boucles de routage (Split Horizon & Poison Reverse).",
-    tech: ["Python", "Socket Programming", "Cisco Packet Tracer", "CCNA principles"],
-    role: "Développeur Unique & Ingénieur Réseau",
-    github: "https://github.com/mamebara-samb/routing-simulator",
+    title: "Health AIProduct (DOCSEN)",
+    description: "Conception et développement d'un projet d'intelligence artificielle médicale lors du Hackathon DOCSEN 2025.",
+    tech: ["Python", "Machine Learning", "AI API"],
+    role: "Développeur IA",
+    github: "https://github.com/mamebara-samb/health-ai",
     featured: false
   },
   {
-    title: "Infrastructure Réseau Campus Sécurisée",
-    description: "Conception et simulation complète d'un réseau d'entreprise multi-bâtiments sous Cisco Packet Tracer.",
-    details: "Mise en œuvre d'une architecture hiérarchique à 3 couches (Accès, Distribution, Cœur). Configuration du routage inter-VLAN (ROAS), des protocoles de redondance HSRP, de la sécurité des ports (Port Security), et de listes de contrôle d'accès (ACL) restrictives.",
-    tech: ["Routing & Switching", "HSRP", "ACLs", "VLANs", "CCNA"],
-    role: "Ingénieur Réseau",
-    github: "https://github.com/mamebara-samb/secure-campus-network",
+    title: "Leunkeule Touba (Sonatel)",
+    description: "Projet d'Agritech innovant conçu et développé pour moderniser l'agriculture locale lors du Hackathon Sonatel 2025.",
+    tech: ["Python", "IoT", "Django"],
+    role: "Développeur",
+    github: "https://github.com/mamebara-samb/leunkeule-touba",
     featured: false
   }
 ];
 
 export const TIMELINE = [
   {
+    year: "2026",
+    title: "Président du Club MET",
+    institution: "Club MET (UCAK)",
+    description: "Management général, pilotage de projets technologiques, animation de la communauté et gestion du budget.",
+    type: "leadership"
+  },
+  {
     year: "2025 - 2026",
-    title: "L3 Informatique & Télécommunications",
-    institution: "Université Catholique de l'Afrique de l'Ouest (UCAO-UCAK)",
-    description: "Spécialisation DAR (Développement d'Applications Réparties). Étude approfondie des systèmes distribués, du middleware, du développement web d'entreprise, des bases de données avancées et de la sécurité des réseaux.",
+    title: "Licence 3 Informatique et Télécommunications (DAR)",
+    institution: "Université Cheikhe Ahmadoul Khadim (UCAK), Touba",
+    description: "Spécialisation en Développement d'Applications Réparties. Systèmes distribués, middleware, sécurité et réseaux.",
     type: "education"
   },
   {
     year: "2025",
-    title: "Certification Cisco CCNA v7 (Routing & Switching)",
+    title: "Certification Cisco CCNA",
     institution: "Cisco Networking Academy",
-    description: "Validation des compétences clés en réseau : configuration avancée de routeurs et commutateurs, protocoles de routage dynamique (OSPF), sécurité réseau de base, adressage IPv4/IPv6, et notions de programmabilité réseau.",
+    description: "Validation des compétences clés en routage, commutation et configuration d'infrastructures réseaux.",
     type: "certification"
   },
   {
-    year: "2023 - 2025",
-    title: "Licence 1 & 2 Informatique",
-    institution: "Université Catholique de l'Afrique de l'Ouest (UCAO-UCAK)",
-    description: "Bases algorithmiques, programmation structurée (C, Java), administration Linux, architecture des ordinateurs et modélisation relationnelle (UML, SQL).",
+    year: "2025",
+    title: "Stagiaire Informatique et Télécoms",
+    institution: "École Polytechnique de Thiès (EPT)",
+    description: "Implication technique et administration système au sein du Centre de Ressources Informatiques (CRI).",
+    type: "experience"
+  },
+  {
+    year: "2025",
+    title: "Secrétaire Général du Club MET",
+    institution: "Club MET (UCAK)",
+    description: "Coordination et gestion administrative de la vie associative et des activités technologiques.",
+    type: "leadership"
+  },
+  {
+    year: "2024 - 2025",
+    title: "Licence 2 Informatique et Télécommunications",
+    institution: "Université Cheikhe Ahmadoul Khadim (UCAK), Touba",
+    description: "Bases réseaux, développement orienté objet, bases de données relationnelles et administration système Linux.",
+    type: "education"
+  },
+  {
+    year: "2023 - 2024",
+    title: "Licence 1 Mathématiques et Informatique",
+    institution: "Université Iba Der Thiam (UIDT), Thiès",
+    description: "Algorithmique, structures de données fondamentales, bases de programmation (C) et mathématiques générales.",
+    type: "education"
+  },
+  {
+    year: "2022",
+    title: "Baccalauréat Scientifique",
+    institution: "Lycée de Mbacké, Mbacké",
+    description: "Diplôme de fin d'études secondaires, spécialisation scientifique.",
     type: "education"
   }
 ];

@@ -1,9 +1,24 @@
-import React from 'react';
-import { FolderGit2, ExternalLink, Code } from 'lucide-react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { FolderGit2 } from 'lucide-react';
 import { GithubIcon } from '@/components/Icons';
-import { PROJECTS } from '@/lib/constants';
+import { getProjects } from '@/lib/api';
 
 export default function Projects() {
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      const data = await getProjects();
+      setProjects(data);
+    };
+    
+    loadProjects();
+    window.addEventListener('storage', loadProjects);
+    return () => window.removeEventListener('storage', loadProjects);
+  }, []);
+
   return (
     <section id="projets" className="py-24 px-6 relative bg-grid-pattern">
       {/* Background flare */}
@@ -24,10 +39,10 @@ export default function Projects() {
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 gap-8">
-          {PROJECTS.map((project) => (
+          {projects.map((project) => (
             <div 
               key={project.title}
-              className="group flex flex-col justify-between p-8 rounded-2xl glass-panel glass-panel-hover relative overflow-hidden"
+              className="group flex flex-col justify-between p-5 sm:p-8 rounded-2xl glass-panel glass-panel-hover relative overflow-hidden"
             >
               {/* Glow Accent */}
               <div className="absolute -right-16 -top-16 w-32 h-32 rounded-full bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500"></div>
@@ -63,22 +78,17 @@ export default function Projects() {
                 </h3>
 
                 {/* Description */}
-                <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+                <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                   {project.description}
-                </p>
-
-                {/* Detailed Spec */}
-                <p className="text-slate-500 text-xs mb-6 leading-relaxed italic border-l border-slate-700 pl-3">
-                  {project.details}
                 </p>
               </div>
 
               {/* Footer Tech Stack */}
               <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
-                {project.tech.map((tech) => (
+                {project.tech.map((tech: string) => (
                   <span 
                     key={tech} 
-                    className="px-2.5 py-1 rounded bg-[#030712] border border-white/5 text-xs text-slate-400"
+                    className="px-2.5 py-1 rounded bg-slate-900 border border-white/5 text-xs text-slate-400 tech-badge"
                   >
                     {tech}
                   </span>

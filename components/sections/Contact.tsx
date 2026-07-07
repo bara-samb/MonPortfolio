@@ -12,31 +12,99 @@ export default function Contact() {
     subject: '',
     message: ''
   });
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API request
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Clear success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
-    }, 1500);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation controls
+    const newErrors = { name: '', email: '', subject: '', message: '' };
+    let hasError = false;
+
+    if (formData.name.trim().length < 2) {
+      newErrors.name = 'Le nom doit contenir au moins 2 caractères.';
+      hasError = true;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Veuillez saisir une adresse e-mail valide.';
+      hasError = true;
+    }
+
+    if (formData.subject.trim().length < 3) {
+      newErrors.subject = 'Le sujet doit contenir au moins 3 caractères.';
+      hasError = true;
+    }
+
+    if (formData.message.trim().length < 10) {
+      newErrors.message = 'Le message doit contenir au moins 10 caractères.';
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Send message to email via FormSubmit API endpoint
+      const response = await fetch("https://formsubmit.co/ajax/maambaara56@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          _subject: `Nouveau message de ${formData.name} : ${formData.subject}`,
+          message: formData.message,
+          _captcha: "false"
+        })
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setErrors({ name: '', email: '', subject: '', message: '' });
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+        }, 5000);
+      } else {
+        alert("Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.");
+      }
+    } catch (err) {
+      console.error("Erreur lors de l'envoi :", err);
+      alert("Impossible d'envoyer le message. Veuillez vérifier votre connexion.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,7 +128,7 @@ export default function Contact() {
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           
           {/* Left Panel: Contact Info */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 order-2 lg:order-1">
             
             <h3 className="text-xl font-bold text-white font-display">
               Informations de contact
@@ -78,7 +146,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Email</p>
-                  <a href={`mailto:${PERSONAL_INFO.email}`} className="text-slate-200 hover:text-sky-400 text-sm font-medium transition-colors">
+                  <a href={`mailto:${PERSONAL_INFO.email}`} className="text-slate-200 hover:text-sky-400 text-sm font-medium transition-colors break-all">
                     {PERSONAL_INFO.email}
                   </a>
                 </div>
@@ -121,7 +189,7 @@ export default function Contact() {
           </div>
 
           {/* Right Panel: Interactive Form */}
-          <div className="lg:col-span-7 p-8 rounded-2xl glass-panel border border-white/5 relative">
+          <div className="lg:col-span-7 p-5 sm:p-8 rounded-2xl glass-panel border border-white/5 relative order-1 lg:order-2">
             
             {isSubmitted ? (
               <div className="flex flex-col items-center justify-center py-16 text-center space-y-4 animate-fade-in">
@@ -153,9 +221,14 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm"
+                      className={`w-full px-4 py-3 rounded-xl bg-slate-950 border text-white placeholder-slate-600 focus:outline-none focus:ring-1 transition-colors text-sm ${
+                        errors.name 
+                          ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
+                          : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
+                      }`}
                       placeholder="Jean Dupont"
                     />
+                    {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
@@ -168,9 +241,14 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm"
+                      className={`w-full px-4 py-3 rounded-xl bg-slate-950 border text-white placeholder-slate-600 focus:outline-none focus:ring-1 transition-colors text-sm ${
+                        errors.email 
+                          ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
+                          : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
+                      }`}
                       placeholder="jean.dupont@example.com"
                     />
+                    {errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
                   </div>
                 </div>
 
@@ -185,9 +263,14 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm"
+                    className={`w-full px-4 py-3 rounded-xl bg-slate-950 border text-white placeholder-slate-600 focus:outline-none focus:ring-1 transition-colors text-sm ${
+                      errors.subject 
+                        ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
+                        : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
+                    }`}
                     placeholder="Objet de votre message"
                   />
+                  {errors.subject && <p className="text-red-500 text-xs mt-1 font-medium">{errors.subject}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -201,9 +284,14 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 rounded-xl bg-[#030712] border border-white/5 text-white placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors text-sm resize-none"
+                    className={`w-full px-4 py-3 rounded-xl bg-slate-950 border text-white placeholder-slate-600 focus:outline-none focus:ring-1 transition-colors text-sm resize-none ${
+                      errors.message 
+                        ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
+                        : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
+                    }`}
                     placeholder="Écrivez votre message ici..."
                   />
+                  {errors.message && <p className="text-red-500 text-xs mt-1 font-medium">{errors.message}</p>}
                 </div>
 
                 <button 

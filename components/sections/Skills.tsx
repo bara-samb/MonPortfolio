@@ -1,30 +1,43 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Server, Network, Layout, Settings2, Cpu } from 'lucide-react';
-import { SKILLS, SKILL_CATEGORIES } from '@/lib/constants';
+import React, { useState, useEffect } from 'react';
+import { Server, Network, Layout, Shield, Cpu } from 'lucide-react';
+import { SKILL_CATEGORIES } from '@/lib/constants';
+import { getSkills } from '@/lib/api';
 
 export default function Skills() {
+  const [skills, setSkills] = useState<any[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
+
+  useEffect(() => {
+    const loadSkills = async () => {
+      const data = await getSkills();
+      setSkills(data);
+    };
+
+    loadSkills();
+    window.addEventListener('storage', loadSkills);
+    return () => window.removeEventListener('storage', loadSkills);
+  }, []);
 
   const getIcon = (categoryId: string) => {
     switch (categoryId) {
       case 'backend':
         return <Server className="w-5 h-5 text-sky-400" />;
+      case 'security':
+        return <Shield className="w-5 h-5 text-emerald-400" />;
       case 'networking':
         return <Network className="w-5 h-5 text-indigo-400" />;
       case 'frontend':
         return <Layout className="w-5 h-5 text-purple-400" />;
-      case 'tools':
-        return <Settings2 className="w-5 h-5 text-pink-400" />;
       default:
         return <Cpu className="w-5 h-5 text-slate-400" />;
     }
   };
 
   const filteredSkills = activeCategory === 'all' 
-    ? SKILLS 
-    : SKILLS.filter(s => s.category === activeCategory);
+    ? skills 
+    : skills.filter(s => s.category === activeCategory);
 
   return (
     <section id="competences" className="py-24 px-6 relative">
@@ -74,11 +87,11 @@ export default function Skills() {
           /* Grid view by categories */
           <div className="grid md:grid-cols-2 gap-8">
             {SKILL_CATEGORIES.map((cat) => {
-              const catSkills = SKILLS.filter(s => s.category === cat.id);
+              const catSkills = skills.filter(s => s.category === cat.id);
               return (
                 <div 
                   key={cat.id} 
-                  className="p-8 rounded-2xl glass-panel border border-white/5 relative overflow-hidden group hover:border-white/10 transition-all duration-300"
+                  className="p-5 sm:p-8 rounded-2xl glass-panel border border-white/5 relative overflow-hidden group hover:border-white/10 transition-all duration-300"
                 >
                   {/* Visual Top Glow */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent"></div>
@@ -115,7 +128,7 @@ export default function Skills() {
           </div>
         ) : (
           /* Filtered List view */
-          <div className="max-w-3xl mx-auto p-8 rounded-2xl glass-panel border border-white/5">
+          <div className="max-w-3xl mx-auto p-5 sm:p-8 rounded-2xl glass-panel border border-white/5">
             <div className="space-y-6">
               {filteredSkills.map((skill) => (
                 <div key={skill.name} className="space-y-2">
