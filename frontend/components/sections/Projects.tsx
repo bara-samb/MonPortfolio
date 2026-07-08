@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { FolderGit2 } from 'lucide-react';
 import { GithubIcon } from '@/components/Icons';
 import { getProjects } from '@/lib/api';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Projects() {
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<any[]>([]);
 
   useEffect(() => {
@@ -29,11 +31,11 @@ export default function Projects() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            Mes <span className="text-sky-400">Projets</span> Récents
+            {t('projects_title').split(' ').map((word, i) => i === 1 ? <span key={i} className="text-sky-400"> {word} </span> : word)}
           </h2>
           <div className="w-12 h-1 bg-gradient-to-r from-sky-400 to-indigo-500 mx-auto mb-6"></div>
           <p className="text-slate-400">
-            Une sélection de travaux récents illustrant mon expertise en développement backend, routage réseau et conception logicielle distribuée.
+            {t('projects_subtitle')}
           </p>
         </div>
 

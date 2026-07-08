@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/react';
+import { LanguageProvider } from '@/lib/LanguageContext';
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -31,7 +32,9 @@ export default function RootLayout({
       className={`${outfit.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
         <Analytics />
       </body>
     </html>

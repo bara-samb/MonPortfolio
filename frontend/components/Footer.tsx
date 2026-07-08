@@ -1,9 +1,13 @@
+"use client";
+
 import React from 'react';
 import { Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -15,17 +19,17 @@ export default function Footer() {
             {PERSONAL_INFO.name}
           </p>
           <p className="mt-1">
-            &copy; {currentYear} — Tous droits réservés.
+            &copy; {currentYear} — {t('footer_rights')}
           </p>
         </div>
 
         {/* Middle: Quick Links */}
         <div className="flex gap-6">
-          <a href="#accueil" className="hover:text-slate-300 transition-colors">Accueil</a>
-          <a href="#competences" className="hover:text-slate-300 transition-colors">Compétences</a>
-          <a href="#projets" className="hover:text-slate-300 transition-colors">Projets</a>
-          <a href="#parcours" className="hover:text-slate-300 transition-colors">Parcours</a>
-          <a href="#contact" className="hover:text-slate-300 transition-colors">Contact</a>
+          <a href="#accueil" className="hover:text-slate-300 transition-colors">{t('nav_home')}</a>
+          <a href="#competences" className="hover:text-slate-300 transition-colors">{t('nav_skills')}</a>
+          <a href="#projets" className="hover:text-slate-300 transition-colors">{t('nav_projects')}</a>
+          <a href="#parcours" className="hover:text-slate-300 transition-colors">{t('nav_timeline')}</a>
+          <a href="#contact" className="hover:text-slate-300 transition-colors">{t('nav_contact')}</a>
         </div>
 
         {/* Right: Social icons */}

@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { GraduationCap, Award, Calendar, Bookmark, Users } from 'lucide-react';
 import { getTimeline } from '@/lib/api';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Timeline() {
+  const { t } = useLanguage();
   const [timeline, setTimeline] = useState<any[]>([]);
 
   useEffect(() => {
@@ -78,11 +80,11 @@ export default function Timeline() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            Mon <span className="text-sky-400">Parcours</span> Académique
+            {t('timeline_title').split(' ').map((word, i) => i === 1 ? <span key={i} className="text-sky-400"> {word}</span> : word)}
           </h2>
           <div className="w-12 h-1 bg-gradient-to-r from-sky-400 to-indigo-500 mx-auto mb-6"></div>
           <p className="text-slate-400">
-            Détails de ma formation universitaire en informatique distribuée et de mes certifications professionnelles en réseaux.
+            {t('timeline_subtitle')}
           </p>
         </div>
 

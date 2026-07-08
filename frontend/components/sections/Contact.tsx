@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Mail, MapPin, Send, CheckCircle2, MessageSquare } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,23 +45,23 @@ export default function Contact() {
     let hasError = false;
 
     if (formData.name.trim().length < 2) {
-      newErrors.name = 'Le nom doit contenir au moins 2 caractères.';
+      newErrors.name = t('error_name_length');
       hasError = true;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Veuillez saisir une adresse e-mail valide.';
+      newErrors.email = t('error_email_invalid');
       hasError = true;
     }
 
-    if (formData.subject.trim().length < 3) {
-      newErrors.subject = 'Le sujet doit contenir au moins 3 caractères.';
+    if (formData.subject.trim().length < 4) {
+      newErrors.subject = t('error_subject_length');
       hasError = true;
     }
 
     if (formData.message.trim().length < 10) {
-      newErrors.message = 'Le message doit contenir au moins 10 caractères.';
+      newErrors.message = t('error_message_length');
       hasError = true;
     }
 
@@ -117,11 +119,11 @@ export default function Contact() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            Me <span className="text-sky-400">Contacter</span>
+            {t('contact_title').split(' ').map((word, i) => i === 1 ? <span key={i} className="text-sky-400"> {word}</span> : word)}
           </h2>
           <div className="w-12 h-1 bg-gradient-to-r from-sky-400 to-indigo-500 mx-auto mb-6"></div>
           <p className="text-slate-400">
-            Une question, une opportunité de stage, d'alternance ou de collaboration ? N'hésitez pas à m'écrire.
+            {t('contact_subtitle')}
           </p>
         </div>
 
@@ -131,11 +133,11 @@ export default function Contact() {
           <div className="lg:col-span-5 space-y-6 order-2 lg:order-1">
             
             <h3 className="text-xl font-bold text-white font-display">
-              Informations de contact
+              {t('contact_info_title')}
             </h3>
             
             <p className="text-slate-400 text-sm leading-relaxed">
-              Vous pouvez me contacter directement par e-mail ou me retrouver sur mes différents réseaux professionnels.
+              {t('contact_info_subtitle')}
             </p>
 
             <div className="space-y-4 pt-4">
@@ -145,7 +147,7 @@ export default function Contact() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Email</p>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">{t('contact_info_email')}</p>
                   <a href={`mailto:${PERSONAL_INFO.email}`} className="text-slate-200 hover:text-sky-400 text-sm font-medium transition-colors break-all">
                     {PERSONAL_INFO.email}
                   </a>
@@ -158,7 +160,7 @@ export default function Contact() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Localisation</p>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">{t('contact_info_location')}</p>
                   <p className="text-slate-200 text-sm font-medium">{PERSONAL_INFO.location}</p>
                 </div>
               </div>
@@ -169,7 +171,7 @@ export default function Contact() {
                   <WhatsappIcon className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">WhatsApp</p>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">{t('contact_info_phone')}</p>
                   <a href={PERSONAL_INFO.whatsapp} target="_blank" rel="noopener noreferrer" className="text-slate-200 hover:text-emerald-400 text-sm font-medium transition-colors">
                     +221 78 017 16 88
                   </a>
@@ -218,9 +220,9 @@ export default function Contact() {
                 <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h4 className="text-xl font-bold text-white">Message envoyé avec succès !</h4>
+                <h4 className="text-xl font-bold text-white">{t('form_sent')}</h4>
                 <p className="text-slate-400 text-sm max-w-sm">
-                  Merci pour votre message. Je vous répondrai dans les plus brefs délais à l'adresse e-mail indiquée.
+                  {t('form_sent_desc')}
                 </p>
               </div>
             ) : (
@@ -228,13 +230,13 @@ export default function Contact() {
                 
                 <div className="flex items-center gap-2 text-slate-300 pb-2 border-b border-white/5 mb-4">
                   <MessageSquare className="w-5 h-5 text-sky-400" />
-                  <span className="font-bold font-display">Envoyer un message</span>
+                  <span className="font-bold font-display">{t('form_send_message')}</span>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Nom complet
+                      {t('form_name')}
                     </label>
                     <input 
                       type="text" 
@@ -254,7 +256,7 @@ export default function Contact() {
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Adresse E-mail
+                      {t('form_email')}
                     </label>
                     <input 
                       type="email" 
@@ -276,7 +278,7 @@ export default function Contact() {
 
                 <div className="space-y-2">
                   <label htmlFor="subject" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    Sujet
+                    {t('form_subject')}
                   </label>
                   <input 
                     type="text" 
@@ -290,14 +292,14 @@ export default function Contact() {
                         ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
                         : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
                     }`}
-                    placeholder="Opportunité de stage ou collaboration"
+                    placeholder={t('form_subject_placeholder')}
                   />
                   {errors.subject && <p className="text-red-500 text-xs mt-1 font-medium">{errors.subject}</p>}
                 </div>
 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    Message
+                    {t('form_message')}
                   </label>
                   <textarea 
                     id="message"
@@ -311,7 +313,7 @@ export default function Contact() {
                         ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500' 
                         : 'border-white/5 focus:border-sky-500 focus:ring-sky-500'
                     }`}
-                    placeholder="Bonjour Mame Bara, je souhaiterais échanger avec vous à propos de..."
+                    placeholder={t('form_message_placeholder')}
                   />
                   {errors.message && <p className="text-red-500 text-xs mt-1 font-medium">{errors.message}</p>}
                 </div>
@@ -319,21 +321,11 @@ export default function Contact() {
                 <button 
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                  className="w-full py-4 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold hover:shadow-lg hover:shadow-emerald-500/10 transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
-                      <span>Envoi en cours...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>Envoyer le message</span>
-                    </>
-                  )}
+                  <Send className="w-4 h-4 shrink-0" />
+                  <span>{isSubmitting ? t('form_sending') : t('form_submit')}</span>
                 </button>
-
               </form>
             )}
 

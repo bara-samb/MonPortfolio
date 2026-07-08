@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Server, Network, Layout, Shield, Cpu } from 'lucide-react';
 import { SKILL_CATEGORIES } from '@/lib/constants';
 import { getSkills } from '@/lib/api';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Skills() {
+  const { t } = useLanguage();
   const [skills, setSkills] = useState<any[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
@@ -46,11 +48,11 @@ export default function Skills() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            Compétences <span className="text-sky-400">Techniques</span>
+            {t('skills_title').split(' ').map((word, i) => i === 1 ? <span key={i} className="text-sky-400"> {word}</span> : word)}
           </h2>
           <div className="w-12 h-1 bg-gradient-to-r from-sky-400 to-indigo-500 mx-auto mb-6"></div>
           <p className="text-slate-400">
-            Mon expertise technique est structurée autour de l'architecture backend, de l'ingénierie des réseaux de télécommunication et des technologies cloud/infrastructure.
+            {t('skills_subtitle')}
           </p>
         </div>
 
@@ -64,7 +66,7 @@ export default function Skills() {
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
-            Toutes
+            {t('skills_all')}
           </button>
           {SKILL_CATEGORIES.map((cat) => (
             <button
@@ -77,7 +79,7 @@ export default function Skills() {
               }`}
             >
               {getIcon(cat.id)}
-              {cat.name}
+              {t(`skills_cat_${cat.id}` as any)}
             </button>
           ))}
         </div>

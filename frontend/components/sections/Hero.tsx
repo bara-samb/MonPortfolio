@@ -5,8 +5,10 @@ import { ArrowDown, Mail, Network, Terminal, Shield, Download } from 'lucide-rea
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '@/components/Icons';
 import { PERSONAL_INFO } from '@/lib/constants';
 import { getSetting } from '@/lib/api';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Hero() {
+  const { t } = useLanguage();
   const [visibleLines, setVisibleLines] = useState(0);
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
@@ -52,7 +54,7 @@ export default function Hero() {
           <div className="flex flex-wrap gap-2.5 items-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/25 text-xs font-semibold text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-              <span>{PERSONAL_INFO.status}</span>
+              <span>{t('hero_status')}</span>
             </div>
 
           </div>
@@ -61,32 +63,32 @@ export default function Hero() {
           <div className="space-y-2">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-none">
               <span className="bg-gradient-to-r from-emerald-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                {PERSONAL_INFO.name}
+                {t('hero_title')}
               </span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-300 font-display">
-              {PERSONAL_INFO.title}
+              {t('hero_job')}
             </p>
           </div>
 
           {/* Description */}
           <p className="text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
-            {PERSONAL_INFO.bio}
+            {t('hero_bio')}
           </p>
 
           {/* Specialization Tags with Green Glow Hover Shine */}
           <div className="flex flex-wrap gap-3 py-2">
             <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-300 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-default">
               <Terminal className="w-3.5 h-3.5 text-emerald-400" />
-              Systèmes Répartis (DAR)
+              {t('hero_tag_distributed')}
             </span>
             <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-300 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-default">
               <Network className="w-3.5 h-3.5 text-emerald-400" />
-              Cisco CCNA Certifié
+              {t('hero_tag_ccna')}
             </span>
             <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/40 hover:text-emerald-300 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-default">
               <Shield className="w-3.5 h-3.5 text-emerald-400" />
-              Réseaux & Sécurité
+              {t('hero_tag_security')}
             </span>
           </div>
 
@@ -96,13 +98,13 @@ export default function Hero() {
               href="#projets"
               className="flex-1 sm:flex-initial text-center px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20"
             >
-              Voir mes projets
+              {t('hero_view_projects')}
             </a>
             <a
               href="#contact"
               className="flex-1 sm:flex-initial text-center px-6 py-3.5 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl border border-white/10 hover:border-white/20 transition-all"
             >
-              Me contacter
+              {t('hero_contact')}
             </a>
             <a
               href={PERSONAL_INFO.cvUrl}
@@ -110,13 +112,13 @@ export default function Hero() {
               className="flex-1 sm:flex-initial text-center px-6 py-3.5 text-sky-400 border border-sky-400/30 rounded-xl hover:bg-sky-400 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 font-bold"
             >
               <Download className="w-5 h-5" />
-              Télécharger mon CV
+              {t('hero_cv')}
             </a>
           </div>
 
           {/* Quick Social Links */}
           <div className="flex items-center gap-4 pt-6 text-slate-500">
-            <span className="text-xs uppercase tracking-wider font-semibold">Suivez-moi</span>
+            <span className="text-xs uppercase tracking-wider font-semibold">{t('hero_follow_me')}</span>
             <div className="w-12 h-[1px] bg-slate-800"></div>
             <div className="flex items-center gap-3">
               <a
