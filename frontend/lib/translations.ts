@@ -41,6 +41,7 @@ export const translations = {
     projects_role: "Rôle",
     projects_tech: "Technologies",
     projects_view_github: "Voir sur GitHub",
+    projects_view_demo: "Voir la démo en direct",
     projects_featured: "Projet Phare",
 
     // Timeline Section
@@ -127,6 +128,7 @@ export const translations = {
     projects_role: "Role",
     projects_tech: "Technologies",
     projects_view_github: "View on GitHub",
+    projects_view_demo: "View Live Demo",
     projects_featured: "Featured Project",
 
     // Timeline Section
@@ -213,6 +215,7 @@ export const translations = {
     projects_role: "الدور",
     projects_tech: "التقنيات",
     projects_view_github: "عرض على GitHub",
+    projects_view_demo: "عرض التجريبي المباشر",
     projects_featured: "مشروع بارز",
 
     // Timeline Section
