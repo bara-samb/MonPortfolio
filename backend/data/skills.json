@@ -1,0 +1,128 @@
+[
+  {
+    "id": "1",
+    "name": "Python (FastAPI / Django)",
+    "category": "backend",
+    "level": 90
+  },
+  {
+    "id": "2",
+    "name": "Java (Quarkus / Spring / JPA)",
+    "category": "backend",
+    "level": 85
+  },
+  {
+    "id": "3",
+    "name": "Node.js / Express (Microservices)",
+    "category": "backend",
+    "level": 88
+  },
+  {
+    "id": "4",
+    "name": "TypeScript / React / Next.js",
+    "category": "backend",
+    "level": 85
+  },
+  {
+    "id": "5",
+    "name": "Flutter / Dart (Mobile)",
+    "category": "backend",
+    "level": 80
+  },
+  {
+    "id": "6",
+    "name": "PHP / MySQL",
+    "category": "backend",
+    "level": 78
+  },
+  {
+    "id": "7",
+    "name": "XGBoost & Random Forest",
+    "category": "ai",
+    "level": 85
+  },
+  {
+    "id": "8",
+    "name": "Scikit-Learn & Pandas",
+    "category": "ai",
+    "level": 88
+  },
+  {
+    "id": "9",
+    "name": "APIs IA & LLM Integration",
+    "category": "ai",
+    "level": 82
+  },
+  {
+    "id": "10",
+    "name": "CCNA / Routage OSPF",
+    "category": "networking",
+    "level": 90
+  },
+  {
+    "id": "11",
+    "name": "Gestion VLAN & Subnetting",
+    "category": "networking",
+    "level": 85
+  },
+  {
+    "id": "12",
+    "name": "Cisco Packet Tracer",
+    "category": "networking",
+    "level": 90
+  },
+  {
+    "id": "13",
+    "name": "Wireshark (Analyse de trafic)",
+    "category": "networking",
+    "level": 80
+  },
+  {
+    "id": "14",
+    "name": "Cryptographie & PKI",
+    "category": "security",
+    "level": 82
+  },
+  {
+    "id": "15",
+    "name": "GnuPG / Kleopatra",
+    "category": "security",
+    "level": 75
+  },
+  {
+    "id": "16",
+    "name": "Administration Linux",
+    "category": "security",
+    "level": 82
+  },
+  {
+    "id": "17",
+    "name": "Git / GitHub",
+    "category": "tools",
+    "level": 90
+  },
+  {
+    "id": "18",
+    "name": "Docker & Conteneurs",
+    "category": "tools",
+    "level": 82
+  },
+  {
+    "id": "19",
+    "name": "Prometheus & Grafana",
+    "category": "tools",
+    "level": 80
+  },
+  {
+    "id": "20",
+    "name": "UML / Merise",
+    "category": "tools",
+    "level": 85
+  },
+  {
+    "id": "21",
+    "name": "Méthodes Agiles (Scrum)",
+    "category": "tools",
+    "level": 80
+  }
+]

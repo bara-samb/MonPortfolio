@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1",
+    "year": "2026",
+    "title": "Président du Club MET",
+    "institution": "Club MET (UCAK)",
+    "description": "Management général, pilotage de projets technologiques, animation de la communauté et gestion du budget.",
+    "type": "leadership"
+  },
+  {
+    "id": "2",
+    "year": "2025 - 2026",
+    "title": "Licence 3 Informatique et Télécommunications (DAR)",
+    "institution": "Université Cheikh Ahmadoul Khadim (UCAK), Touba",
+    "description": "Spécialisation en Développement d'Applications Réparties. Systèmes distribués, middleware, sécurité et réseaux.",
+    "type": "education"
+  },
+  {
+    "id": "3",
+    "year": "2025",
+    "title": "Certification Cisco CCNA",
+    "institution": "Cisco Networking Academy",
+    "description": "Validation des compétences clés en routage, commutation et configuration d'infrastructures réseaux.",
+    "type": "certification"
+  },
+  {
+    "id": "4",
+    "year": "2025",
+    "title": "Stagiaire Informatique et Télécoms",
+    "institution": "École Polytechnique de Thiès (EPT)",
+    "description": "Implication technique et administration système au sein du Centre de Ressources Informatiques (CRI).",
+    "type": "experience"
+  },
+  {
+    "id": "5",
+    "year": "2025",
+    "title": "Secrétaire Général du Club MET",
+    "institution": "Club MET (UCAK)",
+    "description": "Coordination et gestion administrative de la vie associative et des activités technologiques.",
+    "type": "leadership"
+  },
+  {
+    "id": "6",
+    "year": "2024 - 2025",
+    "title": "Licence 2 Informatique et Télécommunications",
+    "institution": "Université Cheikh Ahmadoul Khadim (UCAK), Touba",
+    "description": "Bases réseaux, développement orienté objet, bases de données relationnelles et administration système Linux.",
+    "type": "education"
+  },
+  {
+    "id": "7",
+    "year": "2023 - 2024",
+    "title": "Licence 1 Mathématiques et Informatique",
+    "institution": "Université Iba Der Thiam (UIDT), Thiès",
+    "description": "Algorithmique, structures de données fondamentales, bases de programmation (C) et mathématiques générales.",
+    "type": "education"
+  },
+  {
+    "id": "8",
+    "year": "2022",
+    "title": "Baccalauréat Scientifique",
+    "institution": "Lycée de Mbacké, Mbacké",
+    "description": "Diplôme de fin d'études secondaires, spécialisation scientifique.",
+    "type": "education"
+  }
+]

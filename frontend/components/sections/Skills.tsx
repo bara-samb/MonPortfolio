@@ -2,19 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import { Server, Network, Layout, Shield, Cpu } from 'lucide-react';
-import { SKILL_CATEGORIES } from '@/lib/constants';
+import { SKILL_CATEGORIES, SKILLS as DEFAULT_SKILLS } from '@/lib/constants';
 import { getSkills } from '@/lib/api';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Skills() {
   const { t } = useLanguage();
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<any[]>(DEFAULT_SKILLS);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   useEffect(() => {
     const loadSkills = async () => {
       const data = await getSkills();
-      setSkills(data);
+      if (Array.isArray(data) && data.length >= DEFAULT_SKILLS.length && data.some((s: any) => s.category === 'ai')) {
+        setSkills(data);
+      } else {
+        setSkills(DEFAULT_SKILLS);
+      }
     };
 
     loadSkills();

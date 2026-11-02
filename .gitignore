@@ -44,3 +44,4 @@ next-env.d.ts
 
 # backend local database files
 /backend/data/
+!/backend/data/*.json

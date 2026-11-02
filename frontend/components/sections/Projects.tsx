@@ -5,18 +5,23 @@ import { FolderGit2, ExternalLink, Users, User, Sparkles } from 'lucide-react';
 import { GithubIcon } from '@/components/Icons';
 import { getProjects } from '@/lib/api';
 import { useLanguage } from '@/lib/LanguageContext';
+import { PROJECTS as DEFAULT_PROJECTS } from '@/lib/constants';
 
 type FilterType = 'all' | 'collective' | 'individual' | 'ai' | 'backend' | 'web';
 
 export default function Projects() {
   const { t } = useLanguage();
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>(DEFAULT_PROJECTS);
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   useEffect(() => {
     const loadProjects = async () => {
       const data = await getProjects();
-      setProjects(data);
+      if (Array.isArray(data) && data.length >= DEFAULT_PROJECTS.length && data.some((p: any) => p.type)) {
+        setProjects(data);
+      } else {
+        setProjects(DEFAULT_PROJECTS);
+      }
     };
     
     loadProjects();

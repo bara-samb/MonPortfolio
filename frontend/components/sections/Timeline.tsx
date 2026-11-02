@@ -4,15 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { GraduationCap, Award, Calendar, Bookmark, Users } from 'lucide-react';
 import { getTimeline } from '@/lib/api';
 import { useLanguage } from '@/lib/LanguageContext';
+import { TIMELINE as DEFAULT_TIMELINE } from '@/lib/constants';
 
 export default function Timeline() {
   const { t } = useLanguage();
-  const [timeline, setTimeline] = useState<any[]>([]);
+  const [timeline, setTimeline] = useState<any[]>(DEFAULT_TIMELINE);
 
   useEffect(() => {
     const loadTimeline = async () => {
       const data = await getTimeline();
-      setTimeline(data);
+      if (Array.isArray(data) && data.length >= DEFAULT_TIMELINE.length) { setTimeline(data); } else { setTimeline(DEFAULT_TIMELINE); }
     };
 
     loadTimeline();
