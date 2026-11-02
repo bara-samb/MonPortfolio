@@ -108,7 +108,7 @@ export const PROJECTS: ProjectItem[] = [
     description: "Conception, développement et déploiement de la plateforme officielle de gestion et rayonnement du Club des Métiers & Technologies de l'UFR MET (UCAK). Gestion des adhésions et vitrine technologique.",
     tech: ["React", "JavaScript", "Tailwind CSS", "Node.js", "Git"],
     role: "Lead Développeur & Président Club MET",
-    type: "Collectif",
+    type: "Individuel",
     category: "web",
     github: "https://github.com/bara-samb/club-cmet",
     featured: true

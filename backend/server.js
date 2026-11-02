@@ -96,7 +96,7 @@ const defaultProjects = [
       "Git"
     ],
     "role": "Lead Développeur & Président Club MET",
-    "type": "Collectif",
+    "type": "Individuel",
     "category": "web",
     "github": "https://github.com/bara-samb/club-cmet",
     "featured": true
