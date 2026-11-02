@@ -43,7 +43,17 @@ export async function getProjects(): Promise<any[]> {
   } catch (err) {
     console.warn('API error fetching projects, loading from localStorage/constants:', err);
     const stored = getStored('portfolio_projects');
-    return stored ? JSON.parse(stored) : DEFAULT_PROJECTS;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length >= DEFAULT_PROJECTS.length) {
+          return parsed;
+        }
+      } catch (e) {
+        // ignore parse error and fallback
+      }
+    }
+    return DEFAULT_PROJECTS;
   }
 }
 
@@ -110,7 +120,17 @@ export async function getSkills(): Promise<any[]> {
   } catch (err) {
     console.warn('API error fetching skills, loading from localStorage/constants:', err);
     const stored = getStored('portfolio_skills');
-    return stored ? JSON.parse(stored) : DEFAULT_SKILLS;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length >= DEFAULT_SKILLS.length) {
+          return parsed;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    return DEFAULT_SKILLS;
   }
 }
 

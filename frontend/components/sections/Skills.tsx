@@ -26,6 +26,8 @@ export default function Skills() {
     switch (categoryId) {
       case 'backend':
         return <Server className="w-5 h-5 text-sky-400" />;
+      case 'ai':
+        return <Cpu className="w-5 h-5 text-amber-400" />;
       case 'security':
         return <Shield className="w-5 h-5 text-emerald-400" />;
       case 'networking':

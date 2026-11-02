@@ -1,6 +1,6 @@
 export const PERSONAL_INFO = {
   name: "Mame Bara Samb",
-  title: "Développeur d'Applications Réparties",
+  title: "Développeur d'Applications Réparties & Systèmes Distribués",
   subtitle: "Étudiant en L3 Informatique & Télécommunications (DAR)",
   location: "Touba, Sénégal",
   email: "maambaara56@gmail.com",
@@ -8,26 +8,32 @@ export const PERSONAL_INFO = {
   linkedin: "https://www.linkedin.com/in/mame-bara-samb-76a415291/",
   whatsapp: "https://wa.me/221780171688",
   cvUrl: "/CV_Mame-Bara-Samb.pdf",
-  bio: "Étudiant en Licence 3 Informatique et Télécommunications à l'UCAK, passionné par les systèmes distribués, les architectures middleware, la cybersécurité et le développement d'applications. Expérience acquise à travers des projets d'envergure, des hackathons nationaux et des certifications.",
-  tagline: "Concevoir des architectures applicatives performantes et sécuriser les échanges distribués.",
+  bio: "Étudiant en Licence 3 Informatique et Télécommunications (spécialité DAR) à l'Université Cheikh Ahmadoul Khadim (UCAK), passionné par les systèmes distribués, les architectures microservices, l'intelligence artificielle et la cybersécurité. Expérience confirmée à travers des projets individuels et d'équipe, des hackathons nationaux récompensés et des certifications.",
+  tagline: "Concevoir des architectures distribuées performantes, sécuriser les échanges et créer des solutions logicielles à fort impact.",
   status: "Disponible pour un stage de fin d'études / Alternance"
 };
 
 export const SKILL_CATEGORIES = [
   { id: "backend", name: "Développement & Architectures" },
+  { id: "ai", name: "IA & Machine Learning" },
   { id: "networking", name: "Réseaux & Télécoms" },
   { id: "security", name: "Sécurité & Administration" },
-  {
-    id: "tools", name: "Outils & Méthodologies"
-  }
+  { id: "tools", name: "DevOps & Méthodologies" }
 ];
 
 export const SKILLS = [
-  // Développement
-  { name: "Python (Django)", category: "backend", level: 90 },
-  { name: "Java EE / Spring Boot", category: "backend", level: 80 },
-  { name: "JavaScript / React", category: "backend", level: 82 },
-  { name: "PHP / MySQL", category: "backend", level: 75 },
+  // Développement & Architectures
+  { name: "Python (FastAPI / Django)", category: "backend", level: 90 },
+  { name: "Java (Quarkus / Spring / JPA)", category: "backend", level: 85 },
+  { name: "Node.js / Express (Microservices)", category: "backend", level: 88 },
+  { name: "TypeScript / React / Next.js", category: "backend", level: 85 },
+  { name: "Flutter / Dart (Mobile)", category: "backend", level: 80 },
+  { name: "PHP / MySQL", category: "backend", level: 78 },
+
+  // IA & Machine Learning
+  { name: "XGBoost & Random Forest", category: "ai", level: 85 },
+  { name: "Scikit-Learn & Pandas", category: "ai", level: 88 },
+  { name: "APIs IA & LLM Integration", category: "ai", level: 82 },
 
   // Réseaux
   { name: "CCNA / Routage OSPF", category: "networking", level: 90 },
@@ -38,54 +44,223 @@ export const SKILLS = [
   // Sécurité
   { name: "Cryptographie & PKI", category: "security", level: 82 },
   { name: "GnuPG / Kleopatra", category: "security", level: 75 },
-  { name: "Administration Linux", category: "security", level: 80 },
+  { name: "Administration Linux", category: "security", level: 82 },
 
-  // Outils
-  { name: "Git / GitHub", category: "tools", level: 88 },
-  { name: "Docker", category: "tools", level: 80 },
+  // Outils & DevOps
+  { name: "Git / GitHub", category: "tools", level: 90 },
+  { name: "Docker & Conteneurs", category: "tools", level: 82 },
+  { name: "Prometheus & Grafana", category: "tools", level: 80 },
   { name: "UML / Merise", category: "tools", level: 85 },
-  { name: "Méthodes Agiles", category: "tools", level: 78 }
+  { name: "Méthodes Agiles (Scrum)", category: "tools", level: 80 }
 ];
 
-export const PROJECTS = [
+export interface ProjectItem {
+  id?: string;
+  title: string;
+  description: string;
+  tech: string[];
+  role: string;
+  type: "Individuel" | "Collectif";
+  category: "all" | "ai" | "backend" | "web" | "mobile";
+  github: string;
+  demo?: string;
+  featured: boolean;
+}
+
+export const PROJECTS: ProjectItem[] = [
+  // --- PROJETS PHARES & COLLECTIFS ---
   {
-    title: "Teranga Market (GovaThon)",
-    description: "Développement du backend avec Django (Python) et modélisation complète des structures de données. Projet demi-finaliste du GovaThon 2025.",
-    tech: ["Python", "Django", "PostgreSQL", "Git"],
+    id: "mealprep",
+    title: "MealPrep Teranga - Assistant Nutritionnel Connecté",
+    description: "Application mobile et web d'assistance nutritionnelle intelligente adaptée aux recettes sénégalaises. Planification de repas équilibrés, génération automatique de courses et monitoring en temps réel avec Prometheus et Grafana.",
+    tech: ["Flutter", "Dart", "Node.js", "Prometheus", "Grafana", "Docker"],
+    role: "Développeur Mobile & DevOps",
+    type: "Individuel",
+    category: "mobile",
+    github: "https://github.com/bara-samb/mealPrep",
+    featured: true
+  },
+  {
+    id: "tp-microservices",
+    title: "Plateforme Distribuée de Gestion des Évaluations",
+    description: "Architecture distribuée en microservices pour la gestion complète d'évaluations universitaires : banque de questions, examens en ligne, correction automatisée et manuelle, et publication sécurisée des résultats.",
+    tech: ["Node.js", "Express", "Microservices", "Docker", "JWT", "MongoDB"],
+    role: "Architecte Microservices & Backend",
+    type: "Collectif",
+    category: "backend",
+    github: "https://github.com/bara-samb/tp-microservices-evaluations",
+    featured: true
+  },
+  {
+    id: "boutique-quarkus",
+    title: "Boutique E-Commerce Haute Performance (Quarkus)",
+    description: "Plateforme e-commerce cloud-native ultra-rapide développée en Java avec Quarkus (Supersonic Subatomic Java) et Hibernate ORM / Panache connectée à MySQL, avec APIs REST modulaires et sécurisées.",
+    tech: ["Java", "Quarkus", "Hibernate", "MySQL", "REST API", "Docker"],
+    role: "Développeur Java Backend",
+    type: "Collectif",
+    category: "backend",
+    github: "https://github.com/bara-samb/boutique-quarkus-ucak",
+    featured: true
+  },
+  {
+    id: "club-cmet",
+    title: "Club-MET - Plateforme de Gestion & Rayonnement",
+    description: "Conception, développement et déploiement de la plateforme officielle de gestion et rayonnement du Club des Métiers & Technologies de l'UFR MET (UCAK). Gestion des adhésions et vitrine technologique.",
+    tech: ["React", "JavaScript", "Tailwind CSS", "Node.js", "Git"],
+    role: "Lead Développeur & Président Club MET",
+    type: "Collectif",
+    category: "web",
+    github: "https://github.com/bara-samb/club-cmet",
+    featured: true
+  },
+  {
+    id: "teranga-market",
+    title: "Teranga Market (Demi-Finaliste GovaThon 2025)",
+    description: "Développement du backend avec Django (Python) et modélisation complète des structures de données pour une marketplace solidaire. Projet distingué en demi-finale du hackathon national GovaThon 2025.",
+    tech: ["Python", "Django", "PostgreSQL", "REST API", "Git"],
     role: "Développeur Full-Stack",
-    github: "https://github.com/mamebara-samb/teranga-market",
+    type: "Collectif",
+    category: "web",
+    github: "https://github.com/bara-samb/teranga-market",
+    featured: true
+  },
+
+  // --- PROJETS PHARES INDIVIDUELS & IA ---
+  {
+    id: "al-baraka",
+    title: "Al Baraka - Le Saint Coran (PWA & Android)",
+    description: "Application PWA et mobile pour la lecture et l'écoute du Saint Coran (riwaya Warsh) récité par Serigne Aboul Baraka Mbacké. Lecteur audio intégré, fonctionnement hors-ligne, responsive et performant.",
+    tech: ["TypeScript", "React", "PWA", "Tailwind CSS", "Vite"],
+    role: "Développeur Full-Stack & Mobile",
+    type: "Individuel",
+    category: "mobile",
+    github: "https://github.com/bara-samb/al-baraka",
+    demo: "https://al-baraka-app.pages.dev",
     featured: true
   },
   {
-    title: "Site Officiel Club MET",
-    description: "Conception, développement et déploiement du site officiel du Club MET en React. Gestion des projets techniques et coordination d'équipe.",
-    tech: ["React", "JavaScript", "Tailwind CSS", "Git"],
-    role: "Développeur Web & Gestionnaire",
-    github: "https://github.com/mamebara-samb/club-met-website",
+    id: "credit-risk-ai",
+    title: "Credit Risk AI - Évaluation du Risque de Crédit",
+    description: "Plateforme d'intelligence artificielle pour l'évaluation et la prédiction du risque de crédit basée sur XGBoost et FastAPI. Dashboard de métriques, scoring individuel et analyse historique de dossiers.",
+    tech: ["Python", "FastAPI", "XGBoost", "Scikit-Learn", "Jupyter"],
+    role: "Développeur IA & Data Scientist",
+    type: "Individuel",
+    category: "ai",
+    github: "https://github.com/bara-samb/credit-Risk-AI",
     featured: true
   },
   {
-    title: "Plateforme SI UCAK",
-    description: "Développement de la plateforme de gestion du Système d'Information global de l'Université (UCAK) lors du Bootcamp MURID PRO.",
-    tech: ["React", "Tailwind CSS", "Node.js", "MySQL"],
-    role: "Développeur (Participant)",
-    github: "https://github.com/mamebara-samb/si-ucak",
+    id: "fraude-bancaire",
+    title: "Détecteur de Fraude Bancaire en Temps Réel",
+    description: "Application interactive de scoring et de détection de transactions bancaires frauduleuses en temps réel avec Random Forest. Analyse de comportements anormaux et alertes instantanées.",
+    tech: ["Python", "Random Forest", "Scikit-Learn", "Streamlit", "Pandas"],
+    role: "Développeur Machine Learning",
+    type: "Individuel",
+    category: "ai",
+    github: "https://github.com/bara-samb/fraude-bancaire",
     featured: true
   },
+
+  // --- AUTRES PROJETS COLLECTIFS / HACKATHONS ---
   {
-    title: "Health AIProduct (DOCSEN)",
-    description: "Conception et développement d'un projet d'intelligence artificielle médicale lors du Hackathon DOCSEN 2025.",
-    tech: ["Python", "Machine Learning", "AI API"],
-    role: "Développeur IA",
-    github: "https://github.com/mamebara-samb/health-ai",
+    id: "billetterie-intelligente",
+    title: "Billetterie Intelligente (Microservices & QR Code)",
+    description: "Application de billetterie événementielle organisée en microservices avec génération et vérification de QR Codes sécurisés, contrôle d'accès en temps réel et gestion d'abonnements.",
+    tech: ["JavaScript", "Node.js", "Microservices", "QR Code API", "Express"],
+    role: "Développeur Backend",
+    type: "Collectif",
+    category: "backend",
+    github: "https://github.com/bara-samb/billetterie-intelligente",
     featured: false
   },
   {
-    title: "Leunkeule Touba (Sonatel)",
-    description: "Projet d'Agritech innovant conçu et développé pour moderniser l'agriculture locale lors du Hackathon Sonatel 2025.",
-    tech: ["Python", "IoT", "Django"],
-    role: "Développeur",
-    github: "https://github.com/mamebara-samb/leunkeule-touba",
+    id: "health-ai",
+    title: "Health AIProduct (Hackathon DOCSEN 2025)",
+    description: "Conception et développement d'une solution d'intelligence artificielle médicale lors du Hackathon DOCSEN 2025 pour l'orientation et l'aide à l'analyse diagnostique.",
+    tech: ["Python", "Machine Learning", "FastAPI", "AI API"],
+    role: "Développeur IA",
+    type: "Collectif",
+    category: "ai",
+    github: "https://github.com/bara-samb/health-ai",
+    featured: false
+  },
+  {
+    id: "leunkeule-touba",
+    title: "Leunkeule Touba (Hackathon Sonatel 2025)",
+    description: "Projet d'Agritech innovant combinant capteurs IoT et automatisation pour moderniser l'agriculture et l'irrigation locale lors du Hackathon Sonatel 2025.",
+    tech: ["Python", "IoT", "Django", "Capteurs Sol"],
+    role: "Développeur IoT & Backend",
+    type: "Collectif",
+    category: "backend",
+    github: "https://github.com/bara-samb/leunkeule-touba",
+    featured: false
+  },
+  {
+    id: "si-ucak",
+    title: "Plateforme SI UCAK (Bootcamp MURID PRO)",
+    description: "Développement en équipe de la plateforme de gestion du Système d'Information global de l'Université Cheikh Ahmadoul Khadim lors du Bootcamp MURID PRO.",
+    tech: ["React", "Tailwind CSS", "Node.js", "MySQL"],
+    role: "Développeur Full-Stack",
+    type: "Collectif",
+    category: "web",
+    github: "https://github.com/bara-samb/si-ucak",
+    featured: false
+  },
+
+  // --- AUTRES PROJETS INDIVIDUELS & SPÉCIALISÉS ---
+  {
+    id: "cv-maker-ia",
+    title: "CV Maker IA - Créateur Intelligent de CV",
+    description: "Application d'assistance par Intelligence Artificielle pour la génération, l'optimisation et la mise en forme de CV attractifs pour les profils technologiques.",
+    tech: ["TypeScript", "Next.js", "React", "AI API", "Tailwind CSS"],
+    role: "Développeur Full-Stack & IA",
+    type: "Individuel",
+    category: "ai",
+    github: "https://github.com/bara-samb/cv-maker-ia",
+    featured: false
+  },
+  {
+    id: "terangaimmo",
+    title: "TerangaImmo - Plateforme Immobilière",
+    description: "Mise en place d'une application web pour agence immobilière au Sénégal : catalogue d'annonces, gestion administrative des biens et modélisation relationnelle complète.",
+    tech: ["PHP", "MySQL", "Apache", "HTML5/CSS3", "JavaScript"],
+    role: "Développeur Full-Stack",
+    type: "Individuel",
+    category: "web",
+    github: "https://github.com/bara-samb/TerangaImmo",
+    featured: false
+  },
+  {
+    id: "kawsara-business",
+    title: "Kawsara Global Business - Site Entreprise",
+    description: "Plateforme web commerciale moderne présentant les activités d'import-export, de transport et de services d'une entreprise internationale.",
+    tech: ["TypeScript", "React", "Tailwind CSS", "Vite"],
+    role: "Développeur Frontend",
+    type: "Individuel",
+    category: "web",
+    github: "https://github.com/bara-samb/kawsara-global-business-",
+    featured: false
+  },
+  {
+    id: "iot-backend",
+    title: "IoT Backend - Collecte & Télémétrie de Capteurs",
+    description: "Architecture backend pour la gestion et l'ingestion de flux télémétriques provenant de capteurs IoT avec persistance des données et contrôleurs REST.",
+    tech: ["Node.js", "Express", "IoT Protocols", "MongoDB", "REST API"],
+    role: "Développeur Backend",
+    type: "Individuel",
+    category: "backend",
+    github: "https://github.com/bara-samb/iot-backend",
+    featured: false
+  },
+  {
+    id: "minibank-jpa",
+    title: "MiniBank & Jakarta EE JPA Transactions",
+    description: "Application de transactions et de services bancaires implémentant Jakarta EE, JPA / Hibernate, gestion des transactions ACID et persistance relationnelle sécurisée.",
+    tech: ["Java", "Jakarta EE", "JPA", "Hibernate", "MySQL"],
+    role: "Développeur Java EE",
+    type: "Individuel",
+    category: "backend",
+    github: "https://github.com/bara-samb/minibank",
     featured: false
   }
 ];
@@ -101,7 +276,7 @@ export const TIMELINE = [
   {
     year: "2025 - 2026",
     title: "Licence 3 Informatique et Télécommunications (DAR)",
-    institution: "Université Cheikhe Ahmadoul Khadim (UCAK), Touba",
+    institution: "Université Cheikh Ahmadoul Khadim (UCAK), Touba",
     description: "Spécialisation en Développement d'Applications Réparties. Systèmes distribués, middleware, sécurité et réseaux.",
     type: "education"
   },
@@ -129,7 +304,7 @@ export const TIMELINE = [
   {
     year: "2024 - 2025",
     title: "Licence 2 Informatique et Télécommunications",
-    institution: "Université Cheikhe Ahmadoul Khadim (UCAK), Touba",
+    institution: "Université Cheikh Ahmadoul Khadim (UCAK), Touba",
     description: "Bases réseaux, développement orienté objet, bases de données relationnelles et administration système Linux.",
     type: "education"
   },
