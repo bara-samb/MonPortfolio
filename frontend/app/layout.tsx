@@ -17,8 +17,40 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Mame Bara Samb | Portfolio - Développeur Backend & Systèmes",
-  description: "Portfolio professionnel de Mame Bara Samb. Étudiant en L3 Informatique & Télécommunications (DAR) à l'UCAK. Spécialisé en systèmes distribués, backend Django/Spring Boot et réseaux CCNA.",
+  metadataBase: new URL("https://mame-bara-portfolio.vercel.app"),
+  title: "Mame Bara Samb | Portfolio - Développeur d'Applications Réparties",
+  description: "Portfolio professionnel de Mame Bara Samb. Étudiant en L3 Informatique & Télécommunications (DAR) à l'UCAK. Spécialisé en architectures distribuées, microservices, IA et réseaux.",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+      { url: "/monProfile.jpeg", type: "image/jpeg" }
+    ],
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
+  },
+  openGraph: {
+    title: "Mame Bara Samb | Portfolio - Développeur d'Applications Réparties",
+    description: "Portfolio professionnel de Mame Bara Samb. Spécialisé en architectures distribuées, microservices, IA et réseaux.",
+    url: "https://mame-bara-portfolio.vercel.app",
+    siteName: "Mame Bara Samb Portfolio",
+    images: [
+      {
+        url: "/monProfile.jpeg",
+        width: 880,
+        height: 1280,
+        alt: "Mame Bara Samb - Photo de profil",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mame Bara Samb | Portfolio",
+    description: "Développeur d'Applications Réparties & Systèmes Distribués (UCAK)",
+    images: ["/monProfile.jpeg"],
+  },
 };
 
 export default function RootLayout({
@@ -40,4 +72,3 @@ export default function RootLayout({
     </html>
   );
 }
-

@@ -80,10 +80,14 @@ export default function Navbar() {
           : 'py-6 bg-transparent'
       }`}>
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <a href="#accueil" className="flex items-center gap-2 group min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center group-hover:border-sky-400 group-hover:bg-sky-500/20 transition-all shrink-0">
-              <Code2 className="w-5 h-5 text-sky-400 shrink-0" />
+          {/* Logo with profile photo */}
+          <a href="#accueil" className="flex items-center gap-3 group min-w-0">
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-sky-500/40 group-hover:border-sky-400 transition-all shrink-0 shadow-lg shadow-sky-500/10 bg-slate-900">
+              <img 
+                src="/monProfile.jpeg" 
+                alt="Mame Bara Samb" 
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
+              />
             </div>
             <span className="font-display font-bold text-sm sm:text-base md:text-lg tracking-tight text-white group-hover:text-sky-400 transition-colors truncate max-w-[130px] sm:max-w-none">
               {PERSONAL_INFO.name}
